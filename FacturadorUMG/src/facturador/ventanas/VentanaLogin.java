@@ -100,7 +100,8 @@ public class VentanaLogin extends JDialog implements ActionListener, KeyListener
                 JOptionPane.showMessageDialog(null, "Debe Ingresar Un Password");
             }else{
             conexion=Conexion.getInstancia();
-            ResultSet usuario=conexion.hacerConsulta("select usuario,nombre,rol from usuario where usuario = '" + txtLogin.getText() + "' and password = md5('" + obtenerContraseña(txtPassword.getPassword()) + "')");
+            conexion.ejecutarSentencia("use umgAnalisis");
+            ResultSet usuario=conexion.hacerConsulta("select usuario,nombre,rol from umgAnalisis.Usuario where usuario = '" + txtLogin.getText() + "' and password = md5('" + obtenerContraseña(txtPassword.getPassword()) + "')");
             String nombresUsuario="";
             String tipoUsuario="";
             String login ="";
@@ -160,7 +161,7 @@ public class VentanaLogin extends JDialog implements ActionListener, KeyListener
                 JOptionPane.showMessageDialog(null, "Debe Ingresar Un Password");
             }else{
             conexion=Conexion.getInstancia();
-            ResultSet usuario=conexion.hacerConsulta("select usuario,nombre,rol from usuario where usuario = '" + txtLogin.getText() + "' and password = md5('" + obtenerContraseña(txtPassword.getPassword()) + "')");
+            ResultSet usuario=conexion.hacerConsulta("select usuario,nombre,rol from umgAnalisis.Usuario where usuario = '" + txtLogin.getText() + "' and password = md5('" + obtenerContraseña(txtPassword.getPassword()) + "')");
             String nombresUsuario="";
             String tipoUsuario="";
             String login ="";

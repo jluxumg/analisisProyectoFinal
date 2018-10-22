@@ -30,7 +30,7 @@ public class Conexion {
             ex.printStackTrace();
         }
         try{
-            conexion = DriverManager.getConnection("jdbc:mysql://172.16.8.80:8889/umgAnalisis?user=ichic&password=ichic23!");
+            conexion = DriverManager.getConnection("jdbc:mysql://35.231.58.199:33061/umgAnalisis?user=root&password=secret");
             enunciado = conexion.createStatement();
         }catch(SQLException ex){
             ex.printStackTrace();
