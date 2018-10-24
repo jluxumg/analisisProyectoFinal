@@ -24,10 +24,10 @@ import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-public class CatalogoClientes extends JInternalFrame implements ActionListener, KeyListener {
+public class CatalogoProductos extends JInternalFrame implements ActionListener, KeyListener {
 
     //Cracion de objetos
-    private static CatalogoClientes instancia;
+    private static CatalogoProductos instancia;
     private JPanel panelBotones;
     private JPanel panelVentana;
     private JButton cmdNuevo;
@@ -35,8 +35,8 @@ public class CatalogoClientes extends JInternalFrame implements ActionListener, 
     private JButton cmdModificar;
     private JButton cmdDetalles;
 
-    public JTable tblClientes;
-    private JScrollPane scrollTablaClientes;
+    public JTable tblProductos;
+    private JScrollPane scrollTablaProductos;
     private ModeloDeDatosCliente modeloDeDatos;
     private JLabel espacio;
     private JTextField buscar;
@@ -45,7 +45,7 @@ public class CatalogoClientes extends JInternalFrame implements ActionListener, 
     private JLabel imagenBuscar;
     //Creacion del constructor
 
-    public CatalogoClientes() {
+    public CatalogoProductos() {
         modeloDeDatos = new ModeloDeDatosCliente();
         modeloOrdenado = new TableRowSorter<TableModel>(modeloDeDatos);
         modeloDeDatos.buscar = "";
@@ -133,27 +133,27 @@ public class CatalogoClientes extends JInternalFrame implements ActionListener, 
 
         }
         if (objeto.getSource() == cmdEliminar) {
-            if (tblClientes.getSelectedRow() == -1) {
+            if (tblProductos.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Cliente en la Tabla");
             } else {
                 int respuesta = JOptionPane.showConfirmDialog(null, "Realmente desea eliminar el Cliente!", "Eliminar Cliente", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (respuesta == 0) {
-                    modeloDeDatos.eliminarCliente(tblClientes.getSelectedRow());
+                    modeloDeDatos.eliminarCliente(tblProductos.getSelectedRow());
                 }
             }
         }
         if (objeto.getSource() == cmdModificar) {
-            if (tblClientes.getSelectedRow() == -1) {
+            if (tblProductos.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Cliente en la Tabla");
             } else {
-                ModificarCliente modificarCliente = ModificarCliente.getInstancia(modeloDeDatos.obtenerListaClientes().get(tblClientes.getSelectedRow()), tblClientes.getSelectedRow());
+                ModificarCliente modificarCliente = ModificarCliente.getInstancia(modeloDeDatos.obtenerListaClientes().get(tblProductos.getSelectedRow()), tblProductos.getSelectedRow());
                 modificarCliente.setVisible(true);
             }
 
         }
 
         if (objeto.getSource() == cmdDetalles) {
-            if (tblClientes.getSelectedRow() == -1) {
+            if (tblProductos.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Cliente Para Ver los Detalles");
             } else {
                 CatalogoDetallesCliente.getInstancia().llenar();
@@ -178,26 +178,26 @@ public class CatalogoClientes extends JInternalFrame implements ActionListener, 
 
     //Creacion del Scroll Pane
     public JScrollPane getJScrollPane() {
-        if (scrollTablaClientes == null) {
-            scrollTablaClientes = new JScrollPane();
-            scrollTablaClientes.setBounds(new Rectangle(20, 27, 746, 150));
-            scrollTablaClientes.setViewportView(getTablaClientes());
+        if (scrollTablaProductos == null) {
+            scrollTablaProductos = new JScrollPane();
+            scrollTablaProductos.setBounds(new Rectangle(20, 27, 746, 150));
+            scrollTablaProductos.setViewportView(getTablaClientes());
         }
-        return scrollTablaClientes;
+        return scrollTablaProductos;
     }
     //Metodo para crear JTable e inicializar el modelo de datos
 
     public JTable getTablaClientes() {
-        if (tblClientes == null) {
-            tblClientes = new JTable();
-            tblClientes.setModel(modeloDeDatos);
+        if (tblProductos == null) {
+            tblProductos = new JTable();
+            tblProductos.setModel(modeloDeDatos);
         }
-        return tblClientes;
+        return tblProductos;
     }
 
-    public static CatalogoClientes getInstancia() {
+    public static CatalogoProductos getInstancia() {
         if (instancia == null) {
-            instancia = new CatalogoClientes();
+            instancia = new CatalogoProductos();
         }
         return instancia;
     }
@@ -222,6 +222,6 @@ public class CatalogoClientes extends JInternalFrame implements ActionListener, 
 
     public void keyReleased(KeyEvent e) {
         modeloOrdenado.setRowFilter(RowFilter.regexFilter(buscar.getText(), 1));
-        tblClientes.setRowSorter(modeloOrdenado);
+        tblProductos.setRowSorter(modeloOrdenado);
     }
 }

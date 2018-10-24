@@ -3,9 +3,7 @@ package facturador.beans;
 import java.util.Date;
 
 public class EncabezadoFactura {
-
-    public EncabezadoFactura() {
-    }
+    public EncabezadoFactura(){}
     private Integer idFactura;
     private Clientes cliente;
     private Usuario usuario;
@@ -89,5 +87,6 @@ public class EncabezadoFactura {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-
+    
+    
 }

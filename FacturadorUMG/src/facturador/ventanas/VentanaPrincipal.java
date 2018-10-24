@@ -47,7 +47,7 @@ public class VentanaPrincipal extends JFrame {
 
 
 
-        this.setTitle("Inmobiliaria");
+        this.setTitle("Facturador Analisis 2 UMG");
         this.setSize(1280, 800);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);

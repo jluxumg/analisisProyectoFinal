@@ -24,17 +24,17 @@ public class CatalogoAcercaDe extends JInternalFrame implements ActionListener{
         panelVentana.setLayout(null);
   
 
-        lblTitulo = new JLabel("Inmobiliaria 1.0");
+        lblTitulo = new JLabel("Facturador 1.0");
         lblTitulo.setBounds(270, 35, 180, 20);
         lblTitulo.setFont(new Font("Serif", Font.BOLD, 16));
         lblTitulo.setForeground(Color.darkGray);
 
-        lblTitulo2 = new JLabel("Luis Fernando Chic");
+        lblTitulo2 = new JLabel("UMG-ANALISIS2");
         lblTitulo2.setBounds(270, 90, 180, 20);
         lblTitulo2.setFont(new Font("Serif", Font.BOLD, 14));
         lblTitulo2.setForeground(Color.darkGray);
 
-        lblTitulo3 = new JLabel("Creado Por:");
+        lblTitulo3 = new JLabel("Creado Para:");
         lblTitulo3.setBounds(270, 65, 180, 20);
         lblTitulo3.setFont(new Font("Serif", Font.BOLD, 14));
         lblTitulo3.setForeground(Color.darkGray);
@@ -45,19 +45,19 @@ public class CatalogoAcercaDe extends JInternalFrame implements ActionListener{
         lblEmpresa2.setFont(new Font("Serif", Font.BOLD, 14));
         lblEmpresa2.setForeground(Color.darkGray);
 
-        lblIntegrantes = new JLabel("luischic2003@gmail.com");
+        lblIntegrantes = new JLabel("umg@miumg.edu.gt");
         lblIntegrantes.setBounds(270, 110, 180, 20);
         lblIntegrantes.setFont(new Font("Serif", Font.BOLD, 14));
         lblIntegrantes.setForeground(Color.darkGray);
 
-        luischic = new JLabel("30617940");
+        luischic = new JLabel("2411-1800");
         luischic.setBounds(270, 130, 180, 20);
         luischic.setFont(new Font("Serif", Font.BOLD, 14));
         luischic.setForeground(Color.darkGray);
 
         
         imagen = new JLabel();
-        imagen.setIcon(new ImageIcon(getClass().getResource("/Imagenes/io.jpg")));
+        imagen.setIcon(new ImageIcon(getClass().getResource("/Imagenes/io.png")));
         imagen.setBounds(55, 30, 130, 130);
         
        
@@ -73,7 +73,7 @@ public class CatalogoAcercaDe extends JInternalFrame implements ActionListener{
 
 
         this.add(panelVentana);
-        this.setTitle("Acerca De Control De Clientes");
+        this.setTitle("Acerca De Control De Facturador");
         this.setFrameIcon(new ImageIcon(getClass().getResource("/Imagenes/icono2.png")));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setSize(500,250);

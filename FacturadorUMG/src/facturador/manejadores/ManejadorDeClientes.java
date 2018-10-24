@@ -13,13 +13,15 @@ public class ManejadorDeClientes {
     private PreparedStatement psAgregar;
     private PreparedStatement psModificar;
     private PreparedStatement psEliminar;
+
     private static ManejadorDeClientes instancia;
 
     public ManejadorDeClientes() {
         try {
             psAgregar = Conexion.getInstancia().getConnection().prepareStatement("insert into cliente(idCliente,nombre,apellido,tipoDocumento,documento,direccion,telefono,correo)values(?,?,?,?,?,?,?,?)");
-            psModificar = Conexion.getInstancia().getConnection().prepareStatement("update cliente set cliente=?, nombre = ?, apellido=?, tipoDocumento=?,documento=?,direccion=?,telefono=?,correo=? where idCliente = ?");
+            psModificar = Conexion.getInstancia().getConnection().prepareStatement("update cliente set nombre = ?, apellido=?, tipoDocumento=?,documento=?,direccion=?,telefono=?,correo=? where idCliente = ?");
             psEliminar = Conexion.getInstancia().getConnection().prepareStatement("delete from cliente where idCliente = ?");
+
         } catch (SQLException e) {
         }
     }
@@ -50,7 +52,7 @@ public class ManejadorDeClientes {
         ResultSet resultado = null;
         try {
             //JOptionPane.showMessageDialog(null, VentanaLogin.getInstancia().vendedor);
-            resultado = Conexion.getInstancia().hacerConsulta("select idCliente,nombre,apellido,tipoDocumento,documento,direccion,telefono,correo from clientes where nombre||' '||apellido = " + " like'%" + buscar + "%'");
+            resultado = Conexion.getInstancia().hacerConsulta("select idCliente,nombre,apellido,tipoDocumento,documento,direccion,telefono,correo from cliente where UPPER(nombre||' '||apellido) like '%" + (buscar == null ? "" : buscar.toUpperCase()) + "%'");
             while (resultado.next()) {
                 listaDeClientes.add(new Clientes(resultado.getInt("idCliente"), resultado.getString("nombre"), resultado.getString("apellido"), resultado.getString("tipoDocumento"), resultado.getString("documento"), resultado.getString("direccion"), resultado.getString("telefono"), resultado.getString("correo")));
             }
@@ -61,7 +63,19 @@ public class ManejadorDeClientes {
 
     public void agregarCliente(Clientes clientes) {
         try {
-            psAgregar.setInt(1, clientes.getIdCliente());
+
+            ResultSet resultado = null;
+            int codigo = 1;
+            try {
+                resultado = Conexion.getInstancia().hacerConsulta("select Max(idCliente) from cliente ");
+                if (resultado.next()) {
+                    if (resultado.getInt(1) > 0) {
+                        codigo = resultado.getInt(1) + 1;
+                    }
+                }
+            } catch (SQLException e) {
+            }
+            psAgregar.setInt(1, codigo);
             psAgregar.setString(2, clientes.getNombre());
             psAgregar.setString(3, clientes.getApellido());
             psAgregar.setString(4, clientes.getTipoDocumento());
@@ -87,13 +101,13 @@ public class ManejadorDeClientes {
     public void modificarCliente(Clientes clientes) {
         try {
 
-            psAgregar.setString(1, clientes.getNombre());
-            psAgregar.setString(2, clientes.getApellido());
-            psAgregar.setString(3, clientes.getTipoDocumento());
-            psAgregar.setString(4, clientes.getDocumento());
-            psAgregar.setString(5, clientes.getDireccion());
-            psAgregar.setString(6, clientes.getTelefono());
-            psAgregar.setString(7, clientes.getCorreo());
+            psModificar.setString(1, clientes.getNombre());
+            psModificar.setString(2, clientes.getApellido());
+            psModificar.setString(3, clientes.getTipoDocumento());
+            psModificar.setString(4, clientes.getDocumento());
+            psModificar.setString(5, clientes.getDireccion());
+            psModificar.setString(6, clientes.getTelefono());
+            psModificar.setString(7, clientes.getCorreo());
             psModificar.setInt(8, clientes.getIdCliente());
             psModificar.execute();
         } catch (SQLException e) {
