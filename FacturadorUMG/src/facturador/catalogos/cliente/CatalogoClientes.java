@@ -1,4 +1,4 @@
-package facturador.catalogos;
+package facturador.catalogos.cliente;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -24,10 +24,10 @@ import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-public class CatalogoProductos extends JInternalFrame implements ActionListener, KeyListener {
+public class CatalogoClientes extends JInternalFrame implements ActionListener, KeyListener {
 
     //Cracion de objetos
-    private static CatalogoProductos instancia;
+    private static CatalogoClientes instancia;
     private JPanel panelBotones;
     private JPanel panelVentana;
     private JButton cmdNuevo;
@@ -35,8 +35,8 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
     private JButton cmdModificar;
     private JButton cmdDetalles;
 
-    public JTable tblProductos;
-    private JScrollPane scrollTablaProductos;
+    public JTable tblClientes;
+    private JScrollPane scrollTablaClientes;
     private ModeloDeDatosCliente modeloDeDatos;
     private JLabel espacio;
     private JTextField buscar;
@@ -45,7 +45,7 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
     private JLabel imagenBuscar;
     //Creacion del constructor
 
-    public CatalogoProductos() {
+    public CatalogoClientes() {
         modeloDeDatos = new ModeloDeDatosCliente();
         modeloOrdenado = new TableRowSorter<TableModel>(modeloDeDatos);
         modeloDeDatos.buscar = "";
@@ -133,27 +133,27 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
 
         }
         if (objeto.getSource() == cmdEliminar) {
-            if (tblProductos.getSelectedRow() == -1) {
+            if (tblClientes.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Cliente en la Tabla");
             } else {
                 int respuesta = JOptionPane.showConfirmDialog(null, "Realmente desea eliminar el Cliente!", "Eliminar Cliente", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (respuesta == 0) {
-                    modeloDeDatos.eliminarCliente(tblProductos.getSelectedRow());
+                    modeloDeDatos.eliminarCliente(tblClientes.getSelectedRow());
                 }
             }
         }
         if (objeto.getSource() == cmdModificar) {
-            if (tblProductos.getSelectedRow() == -1) {
+            if (tblClientes.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Cliente en la Tabla");
             } else {
-                ModificarCliente modificarCliente = ModificarCliente.getInstancia(modeloDeDatos.obtenerListaClientes().get(tblProductos.getSelectedRow()), tblProductos.getSelectedRow());
+                ModificarCliente modificarCliente = ModificarCliente.getInstancia(modeloDeDatos.obtenerListaClientes().get(tblClientes.getSelectedRow()), tblClientes.getSelectedRow());
                 modificarCliente.setVisible(true);
             }
 
         }
 
         if (objeto.getSource() == cmdDetalles) {
-            if (tblProductos.getSelectedRow() == -1) {
+            if (tblClientes.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Cliente Para Ver los Detalles");
             } else {
                 CatalogoDetallesCliente.getInstancia().llenar();
@@ -178,26 +178,26 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
 
     //Creacion del Scroll Pane
     public JScrollPane getJScrollPane() {
-        if (scrollTablaProductos == null) {
-            scrollTablaProductos = new JScrollPane();
-            scrollTablaProductos.setBounds(new Rectangle(20, 27, 746, 150));
-            scrollTablaProductos.setViewportView(getTablaClientes());
+        if (scrollTablaClientes == null) {
+            scrollTablaClientes = new JScrollPane();
+            scrollTablaClientes.setBounds(new Rectangle(20, 27, 746, 150));
+            scrollTablaClientes.setViewportView(getTablaClientes());
         }
-        return scrollTablaProductos;
+        return scrollTablaClientes;
     }
     //Metodo para crear JTable e inicializar el modelo de datos
 
     public JTable getTablaClientes() {
-        if (tblProductos == null) {
-            tblProductos = new JTable();
-            tblProductos.setModel(modeloDeDatos);
+        if (tblClientes == null) {
+            tblClientes = new JTable();
+            tblClientes.setModel(modeloDeDatos);
         }
-        return tblProductos;
+        return tblClientes;
     }
 
-    public static CatalogoProductos getInstancia() {
+    public static CatalogoClientes getInstancia() {
         if (instancia == null) {
-            instancia = new CatalogoProductos();
+            instancia = new CatalogoClientes();
         }
         return instancia;
     }
@@ -222,6 +222,6 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
 
     public void keyReleased(KeyEvent e) {
         modeloOrdenado.setRowFilter(RowFilter.regexFilter(buscar.getText(), 1));
-        tblProductos.setRowSorter(modeloOrdenado);
+        tblClientes.setRowSorter(modeloOrdenado);
     }
 }

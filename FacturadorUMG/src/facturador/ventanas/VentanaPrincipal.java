@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Locale;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import facturador.catalogos.Hilo;
+import facturador.catalogos.varios.Hilo;
 
 public class VentanaPrincipal extends JFrame {
 

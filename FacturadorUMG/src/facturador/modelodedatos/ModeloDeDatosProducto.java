@@ -2,21 +2,19 @@ package facturador.modelodedatos;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
-import facturador.beans.Clientes;
 import facturador.beans.Producto;
-import facturador.manejadores.ManejadorDeCliente;
+import facturador.manejadores.ManejadorDeProductos;
 
 public class ModeloDeDatosProducto extends AbstractTableModel {
 
     private ArrayList<Producto> listaDeProductos;
     private ArrayList<Producto> listaDeProductos2;
     public String buscar;
-    private String[] encabezados = {"CODIGO", "NOMBRE", "PRECIO", "CANTIDAD-TOTAL", "CANTIDAD-DISPONIBLE"};
+    private String[] encabezados = {"CODIGO", "NOMBRE", "PRECIO", "CANTIDAD-TOTAL", "CANTIDAD-DISPONIBLE", "DESCRIPCION", "CANTIDAD-VENDIDA"};
 
     public ModeloDeDatosProducto() {
-        listaDeProductos = ManejadorDeProducto.getInstancia().listaProductos();
-        listaDeProductos2 = ManejadorDeProducto.getInstancia().BuscarProducto(buscar);
-
+        listaDeProductos = ManejadorDeProductos.getInstancia().listar();
+        listaDeProductos2 = ManejadorDeProductos.getInstancia().buscar(buscar);
     }
 
     public int getColumnCount() {
@@ -50,35 +48,41 @@ public class ModeloDeDatosProducto extends AbstractTableModel {
             case 4:
                 resultado = String.valueOf(producto.getCantidadDisponible());
                 break;
+            case 5:
+                resultado = String.valueOf(producto.getDescripcion());
+                break;
+            case 6:
+                resultado = String.valueOf(producto.getCantidadVendida());
+                break;
         }
 
         return resultado;
     }
 
     public void agregarProducto(Producto producto) {
-        ManejadorDeProducto.getInstancia().agregarProducto(producto);
-        listaDeProductos = ManejadorDeProducto.getInstancia().listaProductos();
+        ManejadorDeProductos.getInstancia().agregar(producto);
+        listaDeProductos = ManejadorDeProductos.getInstancia().listar();
         fireTableDataChanged();
     }
 
     public void eliminarProducto(int fila) {
-        ManejadorDeProducto.getInstancia().eliminarProducto(listaDeProductos.get(fila));
+        ManejadorDeProductos.getInstancia().eliminar(listaDeProductos.get(fila));
         listaDeProductos.remove(fila);
         fireTableRowsDeleted(fila, fila);
 
     }
 
     public void modificarProducto(int fila, Producto producto) {
-        ManejadorDeProducto.getInstancia().modificarProducto(producto);
+        ManejadorDeProductos.getInstancia().modificar(producto);
         listaDeProductos.set(fila, producto);
         fireTableDataChanged();
     }
 
-    public ArrayList<Clientes> obtenerListaProductos() {
+    public ArrayList<Producto> obtenerListaProductos() {
         return listaDeProductos;
     }
 
     public void actualizar() {
-        listaDeProductos = ManejadorDeProducto.getInstancia().listaProductos();
+        listaDeProductos = ManejadorDeProductos.getInstancia().listar();
     }
 }

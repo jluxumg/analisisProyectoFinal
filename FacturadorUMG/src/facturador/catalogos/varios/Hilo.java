@@ -1,4 +1,4 @@
-package facturador.catalogos;
+package facturador.catalogos.varios;
 import facturador.ventanas.VentanaPrincipal;
 import java.text.SimpleDateFormat;
 import java.util.Date;

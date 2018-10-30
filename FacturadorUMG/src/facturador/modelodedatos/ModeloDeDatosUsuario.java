@@ -1,21 +1,21 @@
 package facturador.modelodedatos;
+
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
-import facturador.beans.Recordatorios;
 import facturador.beans.Usuario;
-import facturador.manejadores.ManejadorUsuarios;
+import facturador.manejadores.ManejadorDeUsuarios;
 
 public class ModeloDeDatosUsuario extends AbstractTableModel {
-    
+
     private ArrayList<Usuario> listaDeUsuarios;
     private ArrayList<Usuario> listaDeUsuarios2;
-    
+
     public String buscar;
     private String[] encabezados = {"USUARIO", "NOMBRE", "APELLIDO", "ESTADO"};
 
     public ModeloDeDatosUsuario() {
-        listaDeUsuarios = ManejadorDeUsuarios.getInstancia().listaClientes();
-        listaDeUsuarios2 = ManejadorDeUsuarios.getInstancia().BuscarCliente(buscar);
+        listaDeUsuarios = ManejadorDeUsuarios.getInstancia().listar();
+        listaDeUsuarios2 = ManejadorDeUsuarios.getInstancia().buscar(buscar);
 
     }
 
@@ -47,27 +47,27 @@ public class ModeloDeDatosUsuario extends AbstractTableModel {
             case 3:
                 resultado = usuario.getEstado();
                 break;
-           
+
         }
 
         return resultado;
     }
 
     public void agregarUsuario(Usuario usuario) {
-        ManejadorDeUsuarios.getInstancia().agregarCliente(usuario);
-        listaDeUsuarios = ManejadorDeUsuarios.getInstancia().listaUsuarios();
+        ManejadorDeUsuarios.getInstancia().agregar(usuario);
+        listaDeUsuarios = ManejadorDeUsuarios.getInstancia().listar();
         fireTableDataChanged();
     }
 
     public void eliminarUsuario(int fila) {
-        ManejadorDeUsuarios.getInstancia().eliminarUsuario(listaDeUsuarios.get(fila));
+        ManejadorDeUsuarios.getInstancia().eliminar(listaDeUsuarios.get(fila));
         listaDeUsuarios.remove(fila);
         fireTableRowsDeleted(fila, fila);
 
     }
 
     public void modificarUsuario(int fila, Usuario usuario) {
-        ManejadorDeUsuarios.getInstancia().modificarUsuario(usuario);
+        ManejadorDeUsuarios.getInstancia().modificar(usuario);
         listaDeUsuarios.set(fila, usuario);
         fireTableDataChanged();
     }
@@ -77,6 +77,6 @@ public class ModeloDeDatosUsuario extends AbstractTableModel {
     }
 
     public void actualizar() {
-        listaDeUsuarios = ManejadorDeUsuarios.getInstancia().listaUsuarios();
+        listaDeUsuarios = ManejadorDeUsuarios.getInstancia().listar();
     }
 }

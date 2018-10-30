@@ -1,4 +1,4 @@
-package facturador.catalogos;
+package facturador.catalogos.varios;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;

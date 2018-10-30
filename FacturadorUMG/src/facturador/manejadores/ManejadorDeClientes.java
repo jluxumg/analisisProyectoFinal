@@ -18,9 +18,9 @@ public class ManejadorDeClientes {
 
     public ManejadorDeClientes() {
         try {
-            psAgregar = Conexion.getInstancia().getConnection().prepareStatement("insert into cliente(idCliente,nombre,apellido,tipoDocumento,documento,direccion,telefono,correo)values(?,?,?,?,?,?,?,?)");
-            psModificar = Conexion.getInstancia().getConnection().prepareStatement("update cliente set nombre = ?, apellido=?, tipoDocumento=?,documento=?,direccion=?,telefono=?,correo=? where idCliente = ?");
-            psEliminar = Conexion.getInstancia().getConnection().prepareStatement("delete from cliente where idCliente = ?");
+            psAgregar = Conexion.getInstancia().getConnection().prepareStatement("insert into Cliente(idCliente,nombre,apellido,tipoDocumento,documento,direccion,telefono,correo)values(?,?,?,?,?,?,?,?)");
+            psModificar = Conexion.getInstancia().getConnection().prepareStatement("update Cliente set nombre = ?, apellido=?, tipoDocumento=?,documento=?,direccion=?,telefono=?,correo=? where idCliente = ?");
+            psEliminar = Conexion.getInstancia().getConnection().prepareStatement("delete from Cliente where idCliente = ?");
 
         } catch (SQLException e) {
         }
@@ -38,7 +38,7 @@ public class ManejadorDeClientes {
         ResultSet resultado = null;
         try {
             //JOptionPane.showMessageDialog(null, VentanaLogin.getInstancia().vendedor);
-            resultado = Conexion.getInstancia().hacerConsulta("select idCliente,nombre,apellido,tipoDocumento,documento,direccion,telefono,correo from cliente ");
+            resultado = Conexion.getInstancia().hacerConsulta("select idCliente,nombre,apellido,tipoDocumento,documento,direccion,telefono,correo from Cliente ");
             while (resultado.next()) {
                 listaDeClientes.add(new Clientes(resultado.getInt("idCliente"), resultado.getString("nombre"), resultado.getString("apellido"), resultado.getString("tipoDocumento"), resultado.getString("documento"), resultado.getString("direccion"), resultado.getString("telefono"), resultado.getString("correo")));
             }
@@ -52,7 +52,7 @@ public class ManejadorDeClientes {
         ResultSet resultado = null;
         try {
             //JOptionPane.showMessageDialog(null, VentanaLogin.getInstancia().vendedor);
-            resultado = Conexion.getInstancia().hacerConsulta("select idCliente,nombre,apellido,tipoDocumento,documento,direccion,telefono,correo from cliente where UPPER(nombre||' '||apellido) like '%" + (buscar == null ? "" : buscar.toUpperCase()) + "%'");
+            resultado = Conexion.getInstancia().hacerConsulta("select idCliente,nombre,apellido,tipoDocumento,documento,direccion,telefono,correo from Cliente where UPPER(nombre||' '||apellido) like '%" + (buscar == null ? "" : buscar.toUpperCase()) + "%'");
             while (resultado.next()) {
                 listaDeClientes.add(new Clientes(resultado.getInt("idCliente"), resultado.getString("nombre"), resultado.getString("apellido"), resultado.getString("tipoDocumento"), resultado.getString("documento"), resultado.getString("direccion"), resultado.getString("telefono"), resultado.getString("correo")));
             }
@@ -67,7 +67,7 @@ public class ManejadorDeClientes {
             ResultSet resultado = null;
             int codigo = 1;
             try {
-                resultado = Conexion.getInstancia().hacerConsulta("select Max(idCliente) from cliente ");
+                resultado = Conexion.getInstancia().hacerConsulta("select Max(idCliente) from Cliente ");
                 if (resultado.next()) {
                     if (resultado.getInt(1) > 0) {
                         codigo = resultado.getInt(1) + 1;

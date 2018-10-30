@@ -8,8 +8,9 @@ import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
-import facturador.catalogos.CatalogoAcercaDe;
-import facturador.catalogos.CatalogoClientes;
+import facturador.catalogos.varios.CatalogoAcercaDe;
+import facturador.catalogos.cliente.CatalogoClientes;
+import facturador.catalogos.producto.CatalogoProductos;
 import facturador.ventanas.VentanaLogin;
 import facturador.ventanas.VentanaPrincipal;
 
@@ -174,13 +175,14 @@ public class MenuPrincipal implements ActionListener{
 
         }
         if(objeto.getSource()==productos){
-            AgregarVendedor agregarVendedor= AgregarVendedor.getInstancia();
-            agregarVendedor.setVisible(true);                    
+            CatalogoProductos.getInstancia().getModelo().actualizar();
+            CatalogoProductos cp = CatalogoProductos.getInstancia();
+            VentanaPrincipal.getInstancia().mdiParent(cp);
         }
         if(objeto.getSource()==usuarios){
-            CatalogoRecordatorios.getInstancia().getModelo().actualizar();
-            CatalogoRecordatorios catalogoRecordatorios= CatalogoRecordatorios.getInstancia();
-            VentanaPrincipal.getInstancia().mdiParent(catalogoRecordatorios);
+//            CatalogoRecordatorios.getInstancia().getModelo().actualizar();
+//            CatalogoRecordatorios catalogoRecordatorios= CatalogoRecordatorios.getInstancia();
+//            VentanaPrincipal.getInstancia().mdiParent(catalogoRecordatorios);
         }
         if (objeto.getSource()== acercaDe2){
             CatalogoAcercaDe catalogoAcercaDe= CatalogoAcercaDe.getInstancia();

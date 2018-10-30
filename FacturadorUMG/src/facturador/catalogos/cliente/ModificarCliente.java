@@ -1,5 +1,6 @@
-package facturador.catalogos;
+package facturador.catalogos.cliente;
 
+import facturador.catalogos.cliente.CatalogoClientes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -15,7 +16,7 @@ import java.awt.Font;
 import javax.swing.JOptionPane;
 import facturador.beans.Clientes;
 
-public class AgregarCliente extends JDialog implements ActionListener {
+public class ModificarCliente extends JDialog implements ActionListener {
 
     private JPanel panelVentana;
     private JLabel imagen;
@@ -39,10 +40,14 @@ public class AgregarCliente extends JDialog implements ActionListener {
     private JButton cmdGuardar;
     private JButton cmdCancelar;
 
-    private static AgregarCliente instancia;
+    private int numeroElemento;
+    private Clientes cliente;
+    private int idCliente;
+
+    private static ModificarCliente instancia;
 
     //Constructor
-    public AgregarCliente() {
+    public ModificarCliente() {
         panelVentana = new JPanel();
         panelVentana.setLayout(null);
 
@@ -146,7 +151,7 @@ public class AgregarCliente extends JDialog implements ActionListener {
         panelVentana.add(cmdCancelar);
 
         this.add(panelVentana);
-        this.setTitle("Nuevo Cliente");
+        this.setTitle("Editar Cliente");
         this.setModal(true);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setSize(600, 420);
@@ -154,68 +159,67 @@ public class AgregarCliente extends JDialog implements ActionListener {
 
         this.setResizable(false);
 
-        //panelVentana.setBackground(Color.lightGray);
     }
 
     public void actionPerformed(ActionEvent objeto) {
         if (objeto.getSource() == cmdGuardar) {
-            int prueba = 0;
-            if (txtDireccion.getText().length() == 0
-                    || txtCorreo.getText().length() == 0 || txtDocumento.getText().length() == 0
-                    || txtTelefono.getText().length() == 0 || txtApellido.getText().length() == 0
-                    || txtNombre.getText().length() == 0) {
-                int respuesta = JOptionPane.showConfirmDialog(null, "Hay Datos En Blanco Desea Ingresarlo Asi!", "Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (respuesta == 0) {
-                    prueba = 1;
-                }
+            getModificarCliente();
+            JOptionPane.showMessageDialog(null, "Ingresado Exitosamente");
+            CatalogoClientes.getInstancia().getModelo().modificarCliente(numeroElemento, cliente);
+            instancia.dispose();
 
-            } else {
-                prueba = 1;
-            }
-            if (prueba == 1) {
-                JOptionPane.showMessageDialog(null, "Ingresado Exitosamente");
-                Clientes cl = new Clientes();
-                cl.setIdCliente(0);
-                cl.setNombre(txtNombre.getText().trim());
-                cl.setApellido(txtApellido.getText().trim());
-                cl.setTipoDocumento(cmbTipoDoc.getSelectedItem().toString());
-                cl.setDocumento(txtDocumento.getText().trim());
-                cl.setDireccion(txtDireccion.getText().trim());
-                cl.setTelefono(txtTelefono.getText());
-                cl.setCorreo(txtCorreo.getText());
-
-                CatalogoClientes.getInstancia().getModelo().agregarCliente(cl);
-
-                instancia.dispose();
-                txtNombre.setText("");
-                txtApellido.setText("");
-                txtDireccion.setText("");
-                txtCorreo.setText("");
-                txtDocumento.setText("");
-                txtTelefono.setText("");
-                cmbTipoDoc.setSelectedItem(null);
-
-            }
         }
 
         if (objeto.getSource() == cmdCancelar) {
             instancia.dispose();
-            txtNombre.setText("");
-            txtApellido.setText("");
-            txtDireccion.setText("");
-            txtCorreo.setText("");
-            txtDocumento.setText("");
-            txtTelefono.setText("");
-            cmbTipoDoc.setSelectedItem(null);
             this.setVisible(false);
         }
     }
 
-    public static AgregarCliente getInstancia() {
+    public static ModificarCliente getInstancia(Clientes clientes, int elemento) {
         if (instancia == null) {
-            instancia = new AgregarCliente();
+            instancia = new ModificarCliente();
         }
+        instancia.setModificarCliente(clientes, elemento);
         return instancia;
     }
 
+    public void setModificarCliente(Clientes clientes, int elemento) {
+        numeroElemento = elemento;
+        idCliente = clientes.getIdCliente();
+        txtNombre.setText(clientes.getNombre());
+        txtApellido.setText(clientes.getApellido());
+        cmbTipoDoc.setSelectedItem(clientes.getTipoDocumento());
+        txtDocumento.setText(clientes.getDocumento());
+        txtDireccion.setText(clientes.getDireccion());
+        txtCorreo.setText(clientes.getCorreo());
+        txtTelefono.setText(clientes.getTelefono());
+
+    }
+
+    public void getModificarCliente() {
+        cliente = new Clientes();
+        cliente.setIdCliente(idCliente);
+        cliente.setNombre(txtNombre.getText().trim());
+        cliente.setApellido(txtApellido.getText().trim());
+        cliente.setDireccion(txtDireccion.getText().trim());
+        cliente.setCorreo(txtCorreo.getText().trim());
+        cliente.setTelefono(txtTelefono.getText().trim());
+        cliente.setDocumento(txtDocumento.getText().trim());
+        cliente.setTipoDocumento(String.valueOf(cmbTipoDoc.getSelectedItem()).trim());
+
+    }
+
+    public void llenar() {
+
+        idCliente = Integer.parseInt(CatalogoClientes.getInstancia().tblClientes.getValueAt(CatalogoClientes.getInstancia().tblClientes.getSelectedRow(), 0).toString());
+        txtNombre.setText(CatalogoClientes.getInstancia().tblClientes.getValueAt(CatalogoClientes.getInstancia().tblClientes.getSelectedRow(), 1).toString());
+        txtApellido.setText(CatalogoClientes.getInstancia().tblClientes.getValueAt(CatalogoClientes.getInstancia().tblClientes.getSelectedRow(), 2).toString());
+        cmbTipoDoc.setSelectedItem(CatalogoClientes.getInstancia().tblClientes.getValueAt(CatalogoClientes.getInstancia().tblClientes.getSelectedRow(), 3).toString());
+        txtDocumento.setText(CatalogoClientes.getInstancia().tblClientes.getValueAt(CatalogoClientes.getInstancia().tblClientes.getSelectedRow(), 4).toString());
+        txtDireccion.setText(CatalogoClientes.getInstancia().tblClientes.getValueAt(CatalogoClientes.getInstancia().tblClientes.getSelectedRow(), 5).toString());
+        txtCorreo.setText(CatalogoClientes.getInstancia().tblClientes.getValueAt(CatalogoClientes.getInstancia().tblClientes.getSelectedRow(), 6).toString());
+        txtTelefono.setText(CatalogoClientes.getInstancia().tblClientes.getValueAt(CatalogoClientes.getInstancia().tblClientes.getSelectedRow(), 7).toString());
+
+    }
 }
