@@ -32,19 +32,13 @@ public class ReporteNuevo {
 
     public void JReportViewParametros(String nombreReporte, Map parametros) {
         try {
-            //InputStream reporte = ReporteNuevo.class.getResourceAsStream(nombreReporte);
-            //JasperReport reporteMaestro = (JasperReport) JRLoader.loadObject(reporte);
-            //JasperPrint print = JasperFillManager.fillReport(reporteMaestro, parametros, Conexion.getInstancia().getConnection());
-            //JasperViewer visor = new JasperViewer(print, false);
-            //visor.setTitle("Visualizar Reporte");
-            //visor.setIconImage(new ImageIcon(getClass().getResource("Imagenes/factura.png")).getImage());
-            //visor.setVisible(true);
             conexion = Conexion.getInstancia();
-            JasperPrint jasperPrintWindow = JasperFillManager.fillReport(
-				nombreReporte, null,
-				conexion.getInstancia().getConnection());
-		JasperViewer jasperViewer = new JasperViewer(jasperPrintWindow);
-		jasperViewer.setVisible(true);
+            JasperReport reporteMaestro = (JasperReport) JRLoader.loadObject(nombreReporte);
+            JasperPrint print = JasperFillManager.fillReport(reporteMaestro, parametros, conexion.getConnection());
+            JasperViewer visor = new JasperViewer(print, false);
+            visor.setTitle("Visualizar Reporte");
+            //visor.setIconImage(new ImageIcon(getClass().getResource("/Imagenes/factura.png")).getImage());
+            visor.setVisible(true);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -13,6 +13,10 @@ import facturador.catalogos.cliente.CatalogoClientes;
 import facturador.catalogos.producto.CatalogoProductos;
 import facturador.ventanas.VentanaLogin;
 import facturador.ventanas.VentanaPrincipal;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import reporte.ReporteNuevo;
 
 public class MenuPrincipal implements ActionListener{
     private JMenuBar barraMenu;
@@ -185,8 +189,9 @@ public class MenuPrincipal implements ActionListener{
 //            VentanaPrincipal.getInstancia().mdiParent(catalogoRecordatorios);
         }
         if (objeto.getSource()== acercaDe2){
-            CatalogoAcercaDe catalogoAcercaDe= CatalogoAcercaDe.getInstancia();
-            VentanaPrincipal.getInstancia().mdiParent(catalogoAcercaDe);
+            //CatalogoAcercaDe catalogoAcercaDe= CatalogoAcercaDe.getInstancia();
+            //VentanaPrincipal.getInstancia().mdiParent(catalogoAcercaDe);
+            reporte();
         }
 
         
@@ -226,5 +231,17 @@ public class MenuPrincipal implements ActionListener{
     }
 
 
+    public void reporte(){
+        Map<String, String> parm = new HashMap<String, String>();
+        File imagen = new File("src/reporte/jasperImages/");
+        File rutaSubReporte = new File("src/reporte/subreportnormal/");
+        parm.put("p_rutaimg", imagen.getAbsolutePath());
+        parm.put("SUBREPORT_DIR", rutaSubReporte.getAbsolutePath()+"/");
+        parm.put("pSchemaDB", "umgAnalisis");
+        parm.put("pCond1", "1");
+        ReporteNuevo reporte = new ReporteNuevo();
+        File file = new File("src/reporte/subreportnormal/Factura.jasper");
+        reporte.JReportViewParametros(file.getAbsolutePath(), parm);
+    }
 
 }
