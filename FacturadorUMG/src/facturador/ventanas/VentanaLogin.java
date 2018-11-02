@@ -1,5 +1,6 @@
 package facturador.ventanas;
 
+import facturador.beans.Usuario;
 import java.awt.*;
 import javax.swing.JDialog;
 import javax.swing.ImageIcon;
@@ -35,6 +36,7 @@ public class VentanaLogin extends JDialog implements ActionListener, KeyListener
     public String loginA = "";
     public String password = "";
     public String vendedor = "";
+    public Usuario userSession;
 
     public static VentanaLogin getInstancia() {
         if (instancia == null) {
@@ -134,12 +136,15 @@ public class VentanaLogin extends JDialog implements ActionListener, KeyListener
                         VentanaPrincipal.getInstancia().usuario = txtLogin.getText();
                         VentanaPrincipal.getInstancia().usuarioC.setText("Usuario Conectado: " + nombresUsuario);
                         JOptionPane.showMessageDialog(null, "Bienvenido al sistema " + "\n" + nombresUsuario);
+                        
                         //JOptionPane.showMessageDialog(null, password);
                         if (tipoUsuario.equals("1")) {
                             MenuPrincipal.getInstancia().superUsuario();
                         } else {
                             MenuPrincipal.getInstancia().usuarioNormal();
                         }
+                        userSession = new Usuario();
+                        userSession.setUsuario(login);
                     } else {
                         JOptionPane.showMessageDialog(null, "USUARIO NO ACTIVO..." + "\n" + "Verifique.");
                     }
@@ -168,7 +173,7 @@ public class VentanaLogin extends JDialog implements ActionListener, KeyListener
                 JOptionPane.showMessageDialog(null, "Debe Ingresar Un Password");
             } else {
                 conexion = Conexion.getInstancia();
-                ResultSet usuario = conexion.hacerConsulta("select usuario,nombre,rol,estado from umgAnalisis.suario where usuario = '" + txtLogin.getText() + "' and password = md5('" + obtenerContraseña(txtPassword.getPassword()) + "')");
+                ResultSet usuario = conexion.hacerConsulta("select usuario,nombre,rol,estado from umgAnalisis.Usuario where usuario = '" + txtLogin.getText() + "' and password = md5('" + obtenerContraseña(txtPassword.getPassword()) + "')");
                 String nombresUsuario = "";
                 String tipoUsuario = "";
                 String login = "";

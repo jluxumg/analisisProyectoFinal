@@ -1,6 +1,5 @@
 package facturador.catalogos.cliente;
 
-import facturador.catalogos.cliente.CatalogoClientes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;

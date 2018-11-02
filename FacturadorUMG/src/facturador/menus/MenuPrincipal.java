@@ -7,13 +7,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JOptionPane;
-import facturador.catalogos.varios.CatalogoAcercaDe;
 import facturador.catalogos.cliente.CatalogoClientes;
+import facturador.catalogos.factura.CatalogoFacturas;
 import facturador.catalogos.producto.CatalogoProducto;
 import facturador.catalogos.usuarios.CatalogoUsuarios;
+import facturador.catalogos.varios.CatalogoAcercaDe;
 import facturador.ventanas.VentanaLogin;
 import facturador.ventanas.VentanaPrincipal;
+import javax.swing.JOptionPane;
 
 public class MenuPrincipal implements ActionListener {
 
@@ -183,6 +184,13 @@ public class MenuPrincipal implements ActionListener {
             CatalogoUsuarios cu = CatalogoUsuarios.getInstancia();
             VentanaPrincipal.getInstancia().mdiParent(cu);
         }
+
+        if (objeto.getSource() == facturar) {
+            CatalogoFacturas.getInstancia().getModelo().actualizar();
+            CatalogoFacturas catalogoFacturas = CatalogoFacturas.getInstancia();
+            VentanaPrincipal.getInstancia().mdiParent(catalogoFacturas);
+        }
+
         if (objeto.getSource() == acercaDe2) {
             CatalogoAcercaDe catalogoAcercaDe = CatalogoAcercaDe.getInstancia();
             VentanaPrincipal.getInstancia().mdiParent(catalogoAcercaDe);

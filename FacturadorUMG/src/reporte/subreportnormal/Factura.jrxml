@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura" pageWidth="590" pageHeight="771" whenNoDataType="AllSectionsNoDetail" columnWidth="590" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="style1"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_rutaimg" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/jerzonlux/Desktop/Backup/jlux/Desktop/FacturaProyecto/jasperImages"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pSchemaDB" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pCond1" class="java.lang.String">
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select idFactura, cliente,b.nombre,b.apellido, a.direccionFactura, fecha, b.documento,a.documentoFiscal
+from	umgAnalisis.EncabezadoFactura a
+	inner join umgAnalisis.Cliente b on a.cliente = b.idCliente
+where idFactura = $P{pCond1}]]>
+	</queryString>
+	<field name="idFactura" class="java.lang.Integer"/>
+	<field name="cliente" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="direccionFactura" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="documento" class="java.lang.String"/>
+	<field name="documentoFiscal" class="java.lang.String"/>
+	<variable name="total1" class="java.lang.String" resetType="Column" calculation="Sum"/>
+	<variable name="detalle" class="java.lang.String">
+		<variableExpression><![CDATA["true"]]></variableExpression>
+	</variable>
+	<variable name="resumen" class="java.lang.String">
+		<variableExpression><![CDATA["false"]]></variableExpression>
+	</variable>
+	<variable name="TOTDET" class="java.lang.String" calculation="Sum"/>
+	<background>
+		<band height="771" splitType="Stretch">
+			<line>
+				<reportElement x="88" y="186" width="1" height="423"/>
+			</line>
+			<line>
+				<reportElement x="10" y="185" width="1" height="496"/>
+			</line>
+			<line>
+				<reportElement x="508" y="185" width="1" height="424"/>
+			</line>
+			<line>
+				<reportElement x="452" y="185" width="1" height="424"/>
+			</line>
+			<line>
+				<reportElement x="578" y="185" width="1" height="496"/>
+			</line>
+			<line>
+				<reportElement x="11" y="213" width="567" height="1"/>
+			</line>
+			<line>
+				<reportElement x="11" y="185" width="567" height="1"/>
+			</line>
+			<line>
+				<reportElement x="11" y="609" width="567" height="1"/>
+			</line>
+			<line>
+				<reportElement x="11" y="680" width="567" height="1"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="14" y="610" width="562" height="70"/>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["A: _____ días vista, se serv¡rán ustedes pagar por esta única factura cambiar¡a girada libre de protesto a la orden o endoso de Solución GT, Sociedad Anónima, por el valor total que está extendida o por el último saldo insoluto que aparezca. El comprador da como bueno el valortotal de esta factura cambiaria y se compromete a cancelarla al vencimiento en las  oficinas de Solución GT,Sociedad Anónima. El incumplimiento del  pagoen los días antes indicados,ocasionan un recargo del ____ % mensual por mora. La cancelación de esta factura, no es válida sin su respectivo Recibo de Caja, la firma de cualquier empleado o dependiente del comprador al aceptar esta factura cambiaria, obliga éste a cumplircon todas lascond¡ciones est¡puladas en la m¡sma, así como declara recibidos los productosy/o servicios conforme y a entera satisfacción libre de protesto. El rechazo de cheque porcualquier motivo, genera costo ad¡cional de Q. 200.00 porconcepto de tastos administrativos."]]></textFieldExpression>
+			</textField>
+		</band>
+	</background>
+	<title>
+		<band height="12" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="173" splitType="Stretch">
+			<textField>
+				<reportElement x="17" y="12" width="194" height="87"/>
+				<textElement verticalAlignment="Top">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Solución GT, Sociedad Anónima"+"\n"+
+"10 Avenida C 15.60, Zona 17,"+"\n"+
+"Colonia El Maestro"+"\n"+
+"Guatemala, Guatemala"+"\n"+
+"Tels.: 2255-1729 / 5516-2909"+"\n"+
+"NIT.:9479828-1"+"\n"+
+"info@soluciongt.com"+"\n"+
+"www.soluciongt.com"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement x="184" y="12" width="243" height="65"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{p_rutaimg}+"/unnamed.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="18" y="0" width="193" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["SOLUCION GT"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="452" y="12" width="117" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["FACTURA"+"\n"+
+"CAMBIARIA"+"\n"+
+"SERIA A"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="453" y="87" width="122" height="12" forecolor="#000000"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUJETO A PAGOS TRIMESTRALES]]></text>
+			</staticText>
+			<rectangle radius="6">
+				<reportElement x="10" y="100" width="570" height="65" forecolor="#3399FF"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="19" y="100" width="371" height="65" forecolor="#000000"/>
+				<textElement verticalAlignment="Top">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nombre:
+
+Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="100" width="188" height="65" forecolor="#000000"/>
+				<textElement verticalAlignment="Top">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha:
+
+Teléfono:
+
+NIT:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="61" y="100" width="315" height="14"/>
+				<textElement verticalAlignment="Top">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}.trim()+" "+$F{apellido}.trim()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="71" y="122" width="305" height="43"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{direccionFactura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="421" y="100" width="158" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="412" y="142" width="159" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{documento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="492" y="45" width="42" height="20" forecolor="#FF0033"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{documentoFiscal}==null?" ":$F{documentoFiscal}.trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="477" y="45" width="15" height="20" forecolor="#FF0033" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="209" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="11" y="0" width="567" height="209"/>
+				<subreportParameter name="pCond1">
+					<subreportParameterExpression><![CDATA[$P{pCond1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="detalle">
+					<subreportParameterExpression><![CDATA[$V{detalle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pSchemaDB">
+					<subreportParameterExpression><![CDATA[$P{pSchemaDB}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Detalle_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="187" splitType="Stretch">
+			<elementGroup>
+				<line>
+					<reportElement x="36" y="154" width="202" height="1"/>
+				</line>
+				<staticText>
+					<reportElement x="35" y="155" width="203" height="12" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" isStrikeThrough="false"/>
+					</textElement>
+					<text><![CDATA[NOMBRE, FIRMA Y SELLO DEL COMPRADO]]></text>
+				</staticText>
+			</elementGroup>
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="11" y="11" width="568" height="117"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pCond1">
+					<subreportParameterExpression><![CDATA[$P{pCond1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="detalle">
+					<subreportParameterExpression><![CDATA[$V{resumen}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pSchemaDB">
+					<subreportParameterExpression><![CDATA[$P{pSchemaDB}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Detalle_subreport2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

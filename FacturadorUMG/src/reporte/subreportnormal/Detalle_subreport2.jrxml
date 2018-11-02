@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_subreport2" pageWidth="567" pageHeight="288" whenNoDataType="AllSectionsNoDetail" columnWidth="567" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="1076"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pSchemaDB" class="java.lang.String">
+		<defaultValueExpression><![CDATA["STCCCDAT"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pCond1" class="java.lang.String">
+		<defaultValueExpression><![CDATA["' '"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="detalle" class="java.lang.String"/>
+	<parameter name="resumen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT A.cantidad, B.descripcion, A.precioUnitario, A.precioTotal
+FROM	umgAnalisis.DetalleFactura A
+	LEFT JOIN umgAnalisis.Producto B ON A.idProducto = B.idProducto]]>
+	</queryString>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="precioUnitario" class="java.lang.Double"/>
+	<field name="precioTotal" class="java.lang.Double"/>
+	<variable name="VALORTOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[new BigDecimal($F{precioTotal})]]></variableExpression>
+	</variable>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<printWhenExpression><![CDATA["true".equals($P{detalle})]]></printWhenExpression>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA["true".equals($P{detalle})]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="0" width="567" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="78" y="1" width="364" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="442" y="1" width="55" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[PRECIO UNITARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="497" y="1" width="70" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="1" width="77" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CANT.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Prevent">
+			<printWhenExpression><![CDATA["true".equals($P{detalle})]]></printWhenExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement x="442" y="0" width="55" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{precioUnitario}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="81" y="0" width="360" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="497" y="0" width="71" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{precioTotal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="0" width="77" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA["false".equals($P{detalle})]]></printWhenExpression>
+			<rectangle>
+				<reportElement x="0" y="1" width="567" height="14" forecolor="#000000" backcolor="#33CCFF"/>
+			</rectangle>
+			<textField>
+				<reportElement x="5" y="1" width="123" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["En letras"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="0" width="284" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="442" y="0" width="55" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["TOTAL Q."]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="286" y="0" width="281" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="497" y="1" width="70" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALORTOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
