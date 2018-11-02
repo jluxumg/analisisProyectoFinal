@@ -8,17 +8,15 @@ import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
-import facturador.catalogos.varios.CatalogoAcercaDe;
 import facturador.catalogos.cliente.CatalogoClientes;
+import facturador.catalogos.factura.CatalogoFacturas;
 import facturador.catalogos.producto.CatalogoProductos;
+import facturador.catalogos.varios.CatalogoAcercaDe;
 import facturador.ventanas.VentanaLogin;
 import facturador.ventanas.VentanaPrincipal;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import reporte.ReporteNuevo;
 
-public class MenuPrincipal implements ActionListener{
+public class MenuPrincipal implements ActionListener {
+
     private JMenuBar barraMenu;
     private JMenu login;
     private JMenuItem salir;
@@ -34,25 +32,25 @@ public class MenuPrincipal implements ActionListener{
     private JMenuItem clientes;
     private JMenuItem usuarios;
     private JMenuItem facturar;
-    
+
     private JMenu acercaDe;
     private JMenuItem acercaDe2;
-    
 
     private static MenuPrincipal instancia;
 
-    public static MenuPrincipal getInstancia(){
-        if(instancia == null){
-            instancia= new MenuPrincipal();
+    public static MenuPrincipal getInstancia() {
+        if (instancia == null) {
+            instancia = new MenuPrincipal();
         }
         return instancia;
     }
-    public MenuPrincipal(){
+
+    public MenuPrincipal() {
         barraMenu = new JMenuBar();
-   
+
     }
-    
-    public JMenuBar getMenu(){
+
+    public JMenuBar getMenu() {
         login = new JMenu("Login        ");
         login.setIcon(new ImageIcon(getClass().getResource("/Imagenes/login.png")));
         login.setMnemonic('L');
@@ -71,7 +69,7 @@ public class MenuPrincipal implements ActionListener{
         Musuarios.setIcon(new ImageIcon(getClass().getResource("/Imagenes/login.png")));
         Musuarios.setMnemonic('U');
         Musuarios.setVisible(false);
-        
+
         Mfacturar = new JMenu("Facturador");
         Mfacturar.setIcon(new ImageIcon(getClass().getResource("/Imagenes/caja.png")));
         Mfacturar.setMnemonic('F');
@@ -91,7 +89,7 @@ public class MenuPrincipal implements ActionListener{
         usuarios.setIcon(new ImageIcon(getClass().getResource("/Imagenes/iniciarSesion.png")));
         usuarios.setMnemonic('U');
         usuarios.addActionListener(this);
-        
+
         facturar = new JMenuItem("Facturar");
         facturar.setIcon(new ImageIcon(getClass().getResource("/Imagenes/editar.png")));
         facturar.setMnemonic('U');
@@ -102,14 +100,14 @@ public class MenuPrincipal implements ActionListener{
         iniciarSesion.setMnemonic('I');
         iniciarSesion.addActionListener(this);
 
-        cerrarSesion =new JMenuItem("Cerrar Sesion");
+        cerrarSesion = new JMenuItem("Cerrar Sesion");
         cerrarSesion.setIcon(new ImageIcon(getClass().getResource("/Imagenes/cerrar sesion.png")));
         cerrarSesion.setMnemonic('C');
         cerrarSesion.setVisible(false);
         cerrarSesion.addActionListener(this);
-  
-        salir= new JMenuItem("Salir");
-        salir.setIcon(new ImageIcon (getClass().getResource("/Imagenes/salir.png")));
+
+        salir = new JMenuItem("Salir");
+        salir.setIcon(new ImageIcon(getClass().getResource("/Imagenes/salir.png")));
         salir.setMnemonic('S');
         salir.addActionListener(this);
         salir.setVisible(true);
@@ -121,18 +119,17 @@ public class MenuPrincipal implements ActionListener{
         acercaDe2 = new JMenuItem("Informacion");
         acercaDe2.setIcon(new ImageIcon(getClass().getResource("/Imagenes/info.png")));
         acercaDe2.addActionListener(this);
-          
+
         login.add(iniciarSesion);
         login.add(cerrarSesion);
         login.add(salir);
 
         acercaDe.add(acercaDe2);
-        
+
         Mproductos.add(productos);
         Mclientes.add(clientes);
         Musuarios.add(usuarios);
         Mfacturar.add(facturar);
-        
 
         barraMenu.add(login);
         barraMenu.add(Mproductos);
@@ -140,15 +137,14 @@ public class MenuPrincipal implements ActionListener{
         barraMenu.add(Musuarios);
         barraMenu.add(Mfacturar);
         barraMenu.add(acercaDe);
-       
+
         //barraMenu.add(salir);
         return barraMenu;
 
-
     }
 
-    public void actionPerformed(ActionEvent objeto){
-        if(objeto.getSource()==iniciarSesion){
+    public void actionPerformed(ActionEvent objeto) {
+        if (objeto.getSource() == iniciarSesion) {
             iniciarSesion.setVisible(true);
             ventanaLogin = VentanaLogin.getInstancia();
             ventanaLogin.setLocationRelativeTo(null);
@@ -159,48 +155,52 @@ public class MenuPrincipal implements ActionListener{
             VentanaLogin.getInstancia().txtPassword.setText("");
 
         }
-        if (objeto.getSource()== salir){
+        if (objeto.getSource() == salir) {
             int respuesta = JOptionPane.showConfirmDialog(null, "Realmente desea salir de la Aplicacion", "Cerrar Aplicacion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if(respuesta == 0 ){
-                 System.exit(1);
+            if (respuesta == 0) {
+                System.exit(1);
             }
 
-
         }
 
-        if (objeto.getSource()==cerrarSesion){
+        if (objeto.getSource() == cerrarSesion) {
             ocultarMenu();
-                        
+
         }
-        if(objeto.getSource()==clientes){
+        if (objeto.getSource() == clientes) {
             CatalogoClientes.getInstancia().getModelo().actualizar();
-            CatalogoClientes catalogoClientes= CatalogoClientes.getInstancia();
+            CatalogoClientes catalogoClientes = CatalogoClientes.getInstancia();
             VentanaPrincipal.getInstancia().mdiParent(catalogoClientes);
 
         }
-        if(objeto.getSource()==productos){
+        if (objeto.getSource() == productos) {
             CatalogoProductos.getInstancia().getModelo().actualizar();
             CatalogoProductos cp = CatalogoProductos.getInstancia();
             VentanaPrincipal.getInstancia().mdiParent(cp);
         }
-        if(objeto.getSource()==usuarios){
+        if (objeto.getSource() == usuarios) {
 //            CatalogoRecordatorios.getInstancia().getModelo().actualizar();
 //            CatalogoRecordatorios catalogoRecordatorios= CatalogoRecordatorios.getInstancia();
 //            VentanaPrincipal.getInstancia().mdiParent(catalogoRecordatorios);
         }
-        if (objeto.getSource()== acercaDe2){
-            //CatalogoAcercaDe catalogoAcercaDe= CatalogoAcercaDe.getInstancia();
-            //VentanaPrincipal.getInstancia().mdiParent(catalogoAcercaDe);
-            reporte();
+
+        if (objeto.getSource() == facturar) {
+            CatalogoFacturas.getInstancia().getModelo().actualizar();
+            CatalogoFacturas catalogoFacturas = CatalogoFacturas.getInstancia();
+            VentanaPrincipal.getInstancia().mdiParent(catalogoFacturas);
         }
 
-        
+        if (objeto.getSource() == acercaDe2) {
+            CatalogoAcercaDe catalogoAcercaDe = CatalogoAcercaDe.getInstancia();
+            VentanaPrincipal.getInstancia().mdiParent(catalogoAcercaDe);
+        }
 
     }
-    public void ocultarMenu(){
+
+    public void ocultarMenu() {
         iniciarSesion.setVisible(true);
         cerrarSesion.setVisible(false);
-        login.setText("Login");       
+        login.setText("Login");
         salir.setVisible(true);
         Mproductos.setVisible(false);
         Mclientes.setVisible(false);
@@ -208,9 +208,10 @@ public class MenuPrincipal implements ActionListener{
         Mfacturar.setVisible(false);
         VentanaPrincipal.getInstancia().lblHora.setVisible(false);
         VentanaPrincipal.getInstancia().usuarioC.setVisible(false);
-        VentanaLogin.getInstancia().vendedor="";
+        VentanaLogin.getInstancia().vendedor = "";
     }
-    public void mostrarMenu(){
+
+    public void mostrarMenu() {
         login.setText("Conectado");
         cerrarSesion.setVisible(true);
         iniciarSesion.setVisible(false);
@@ -221,27 +222,14 @@ public class MenuPrincipal implements ActionListener{
         Mfacturar.setVisible(true);
 
     }
-    public void superUsuario(){            
+
+    public void superUsuario() {
         salir.setVisible(false);
     }
-    public void usuarioNormal(){
+
+    public void usuarioNormal() {
         salir.setVisible(false);
-        
 
-    }
-
-
-    public void reporte(){
-        Map<String, String> parm = new HashMap<String, String>();
-        File imagen = new File("src/reporte/jasperImages/");
-        File rutaSubReporte = new File("src/reporte/subreportnormal/");
-        parm.put("p_rutaimg", imagen.getAbsolutePath());
-        parm.put("SUBREPORT_DIR", rutaSubReporte.getAbsolutePath()+"/");
-        parm.put("pSchemaDB", "umgAnalisis");
-        parm.put("pCond1", "1");
-        ReporteNuevo reporte = new ReporteNuevo();
-        File file = new File("src/reporte/subreportnormal/Factura.jasper");
-        reporte.JReportViewParametros(file.getAbsolutePath(), parm);
     }
 
 }

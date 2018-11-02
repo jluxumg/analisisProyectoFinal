@@ -60,6 +60,29 @@ public class ManejadorDeClientes {
         }
         return listaDeClientes;
     }
+    
+    
+    //Busca cliente por ID
+    public Clientes BuscarClienteID(int id) {
+        Clientes cliente = new Clientes();
+        ResultSet resultado = null;
+        try {
+            //JOptionPane.showMessageDialog(null, VentanaLogin.getInstancia().vendedor);
+            resultado = Conexion.getInstancia().hacerConsulta("select idCliente,nombre,apellido,tipoDocumento,documento,direccion,telefono,correo from Cliente where idCliente = " + id);
+            while (resultado.next()) {
+               cliente.setIdCliente(resultado.getInt("idCliente"));
+               cliente.setNombre(resultado.getString("nombre"));
+               cliente.setApellido(resultado.getString("apellido")); 
+               cliente.setTipoDocumento(resultado.getString("tipoDocumento")); 
+               cliente.setDocumento(resultado.getString("documento")); 
+               cliente.setDireccion(resultado.getString("direccion"));
+               cliente.setTelefono(resultado.getString("telefono")); 
+               cliente.setCorreo(resultado.getString("correo"));
+            }
+        } catch (SQLException e) {
+        }
+        return cliente;
+    }
 
     public void agregarCliente(Clientes clientes) {
         try {

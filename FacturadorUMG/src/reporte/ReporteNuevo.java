@@ -37,7 +37,7 @@ public class ReporteNuevo {
             JasperPrint print = JasperFillManager.fillReport(reporteMaestro, parametros, conexion.getConnection());
             JasperViewer visor = new JasperViewer(print, false);
             visor.setTitle("Visualizar Reporte");
-            //visor.setIconImage(new ImageIcon(getClass().getResource("/Imagenes/factura.png")).getImage());
+            //visor.setIconImage(new ImageIcon(getClass().getResource(imagen.getAbsolutePath())).getImage());
             visor.setVisible(true);
         } catch (Exception ex) {
             ex.printStackTrace();
