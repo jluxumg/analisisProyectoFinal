@@ -1,6 +1,7 @@
 package facturador.modelodedatos;
 
 import facturador.beans.EncabezadoFactura;
+import facturador.manejadores.ManejadorDeClientes;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import facturador.manejadores.ManejadorDeHeaderFactura;
@@ -70,7 +71,7 @@ public class ModeloDeDatosFactura extends AbstractTableModel {
     
     public void emitirFactura(int fila, EncabezadoFactura factura) {
         ManejadorDeHeaderFactura.getInstancia().emitir(factura);
-        listaDeFacturas.set(fila, factura);
+        listaDeFacturas = ManejadorDeHeaderFactura.getInstancia().listar();
         fireTableDataChanged();
     }
 

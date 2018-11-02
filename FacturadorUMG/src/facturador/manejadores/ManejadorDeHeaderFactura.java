@@ -61,7 +61,7 @@ public class ManejadorDeHeaderFactura {
         listaDeHeader = new ArrayList<EncabezadoFactura>();
         ResultSet resultado = null;
         try {
-            resultado = Conexion.getInstancia().hacerConsulta("select idFactura,cliente,CONCAT(nombre, ' ', apellido) nombreCliente,usuario,direccionFactura,estado,documentoFiscal,totalFactura,fecha from EncabezadoFactura a left join Cliente b on a.cliente = b.idCliente where idFactura =" +buscar + "");
+            resultado = Conexion.getInstancia().hacerConsulta("select idFactura,cliente,CONCAT(nombre, ' ', apellido) nombreCliente,usuario,direccionFactura,estado,documentoFiscal,totalFactura,fecha from EncabezadoFactura a left join Cliente b on a.cliente = b.idCliente where idFactura =" + buscar + "");
             while (resultado.next()) {
                 Clientes cliente = new Clientes();
                 Usuario usuario = new Usuario();
@@ -74,12 +74,12 @@ public class ManejadorDeHeaderFactura {
         }
         return listaDeHeader;
     }
-    
+
     public EncabezadoFactura buscar(int buscar) {
         EncabezadoFactura factura = new EncabezadoFactura();
         ResultSet resultado = null;
         try {
-            resultado = Conexion.getInstancia().hacerConsulta("select idFactura,cliente,CONCAT(nombre, ' ', apellido) nombreCliente,usuario,direccionFactura,estado,documentoFiscal,totalFactura,fecha from EncabezadoFactura a left join Cliente b on a.cliente = b.idCliente where idFactura =" +buscar + "");
+            resultado = Conexion.getInstancia().hacerConsulta("select idFactura,cliente,CONCAT(nombre, ' ', apellido) nombreCliente,usuario,direccionFactura,estado,documentoFiscal,totalFactura,fecha from EncabezadoFactura a left join Cliente b on a.cliente = b.idCliente where idFactura =" + buscar + "");
             while (resultado.next()) {
                 Clientes cliente = new Clientes();
                 Usuario usuario = new Usuario();
@@ -92,7 +92,7 @@ public class ManejadorDeHeaderFactura {
         }
         return factura;
     }
-    
+
     public Integer correlativoFactura() {
         Integer correlativo = 0;
         ResultSet resultado = null;
@@ -100,27 +100,27 @@ public class ManejadorDeHeaderFactura {
             //JOptionPane.showMessageDialog(null, VentanaLogin.getInstancia().vendedor);
             resultado = Conexion.getInstancia().hacerConsulta("select max(idFactura)+1 correlativo from EncabezadoFactura");
             while (resultado.next()) {
-               correlativo = resultado.getInt("correlativo");
-               if(correlativo == null || correlativo == 0){
-                   correlativo = 1;
-               }
+                correlativo = resultado.getInt("correlativo");
+                if (correlativo == null || correlativo == 0) {
+                    correlativo = 1;
+                }
             }
         } catch (SQLException e) {
         }
         return correlativo;
     }
-    
+
     public Integer correlativoFiscal(int fac) {
         Integer correlativo = 0;
         ResultSet resultado = null;
         try {
             //JOptionPane.showMessageDialog(null, VentanaLogin.getInstancia().vendedor);
-            resultado = Conexion.getInstancia().hacerConsulta("select idFactura+1000 correlativo from EncabezadoFactura where idFactura ="+fac);
+            resultado = Conexion.getInstancia().hacerConsulta("select idFactura+1000 correlativo from EncabezadoFactura where idFactura =" + fac);
             while (resultado.next()) {
-               correlativo = resultado.getInt("correlativo");
-               if(correlativo == null || correlativo == 0){
-                   correlativo = 1;
-               }
+                correlativo = resultado.getInt("correlativo");
+                if (correlativo == null || correlativo == 0) {
+                    correlativo = 1;
+                }
             }
         } catch (SQLException e) {
         }
@@ -134,7 +134,7 @@ public class ManejadorDeHeaderFactura {
             psAgregar.setString(3, encabezadoFactura.getUsuario().getUsuario());
             psAgregar.setString(4, encabezadoFactura.getDireccionFactura());
             psAgregar.setString(5, encabezadoFactura.getEstado());
-            psAgregar.setString(6, String.valueOf(correlativoFactura()+1000));
+            psAgregar.setString(6, encabezadoFactura.getEstado() == "FAC" ? String.valueOf(correlativoFactura() + 1000) : " ");
             psAgregar.setDouble(7, encabezadoFactura.getTotalFactura());
             //psAgregar.setDate(8, (Date) encabezadoFactura.getFecha());
             psAgregar.execute();
@@ -167,7 +167,7 @@ public class ManejadorDeHeaderFactura {
             e.printStackTrace();
         }
     }
-    
+
     public void anular(EncabezadoFactura encabezadoFactura) {
         try {
             psAnular.setInt(1, encabezadoFactura.getIdFactura());
@@ -176,7 +176,7 @@ public class ManejadorDeHeaderFactura {
             e.printStackTrace();
         }
     }
-    
+
     public void emitir(EncabezadoFactura encabezadoFactura) {
         try {
             psEmitirFactura.setInt(1, correlativoFiscal(encabezadoFactura.getIdFactura()));

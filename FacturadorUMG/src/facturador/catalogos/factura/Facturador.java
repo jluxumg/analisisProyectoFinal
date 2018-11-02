@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import facturador.manejadores.ManejadorDeClientes;
-import facturador.manejadores.ManejadorDeUsuarios;
 import facturador.ventanas.VentanaLogin;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -151,9 +150,9 @@ public class Facturador extends JDialog implements ActionListener {
         cmdCancelar.addActionListener(this);
         //Array de ‘String’ con los titulos de las columnas 
         String[] columnNames = {"Correlativo", "Producto", "Cantidad", "Precio Unitario", "Precio Total"};
-        
-        DefaultTableModel modeloDetalle = new DefaultTableModel(columnNames,0);
-        
+
+        DefaultTableModel modeloDetalle = new DefaultTableModel(columnNames, 0);
+
         //modeloDetalle.set
         //Creacion de la tabla 
         final JTable table = new JTable(modeloDetalle);
@@ -162,7 +161,6 @@ public class Facturador extends JDialog implements ActionListener {
         //Creamos un scrollpanel y se lo agregamos a la tabla 
         JScrollPane scrollpane = new JScrollPane(table);
         scrollpane.setBounds(15, 245, 960, 300);
-
 
         panelVentana.add(imagen);
 
@@ -243,6 +241,11 @@ public class Facturador extends JDialog implements ActionListener {
             cmbCliente.setSelectedItem(null);
             this.setVisible(false);
         }
+        
+        if (objeto.getSource() == btnAgregar) {
+            AgregarDetalle agregarDetalle = AgregarDetalle.getInstancia();
+            agregarDetalle.setVisible(true);
+        }
     }
 
     public static Facturador getInstancia() {
@@ -251,5 +254,6 @@ public class Facturador extends JDialog implements ActionListener {
         }
         return instancia;
     }
+
 
 }

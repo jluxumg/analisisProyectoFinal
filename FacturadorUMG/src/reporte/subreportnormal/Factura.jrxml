@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura" pageWidth="590" pageHeight="771" whenNoDataType="AllSectionsNoDetail" columnWidth="590" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="0.75"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="162"/>
+	<property name="ireport.y" value="2403"/>
 	<style name="style1"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
@@ -17,7 +17,7 @@
 		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select idFactura, cliente,b.nombre,b.apellido, a.direccionFactura, fecha, b.documento,a.documentoFiscal
+		<![CDATA[select idFactura, cliente,b.nombre,b.apellido, a.direccionFactura, fecha, b.documento,a.documentoFiscal,b.telefono
 from	umgAnalisis.EncabezadoFactura a
 	inner join umgAnalisis.Cliente b on a.cliente = b.idCliente
 where idFactura = $P{pCond1}]]>
@@ -30,6 +30,7 @@ where idFactura = $P{pCond1}]]>
 	<field name="fecha" class="java.sql.Timestamp"/>
 	<field name="documento" class="java.lang.String"/>
 	<field name="documentoFiscal" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
 	<variable name="total1" class="java.lang.String" resetType="Column" calculation="Sum"/>
 	<variable name="detalle" class="java.lang.String">
 		<variableExpression><![CDATA["true"]]></variableExpression>
@@ -70,7 +71,7 @@ where idFactura = $P{pCond1}]]>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="14" y="610" width="562" height="70"/>
 				<textElement textAlignment="Justified">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["A: _____ días vista, se serv¡rán ustedes pagar por esta única factura cambiar¡a girada libre de protesto a la orden o endoso de Solución GT, Sociedad Anónima, por el valor total que está extendida o por el último saldo insoluto que aparezca. El comprador da como bueno el valortotal de esta factura cambiaria y se compromete a cancelarla al vencimiento en las  oficinas de Solución GT,Sociedad Anónima. El incumplimiento del  pagoen los días antes indicados,ocasionan un recargo del ____ % mensual por mora. La cancelación de esta factura, no es válida sin su respectivo Recibo de Caja, la firma de cualquier empleado o dependiente del comprador al aceptar esta factura cambiaria, obliga éste a cumplircon todas lascond¡ciones est¡puladas en la m¡sma, así como declara recibidos los productosy/o servicios conforme y a entera satisfacción libre de protesto. El rechazo de cheque porcualquier motivo, genera costo ad¡cional de Q. 200.00 porconcepto de tastos administrativos."]]></textFieldExpression>
 			</textField>
@@ -187,6 +188,11 @@ NIT:]]></text>
 				</textElement>
 				<text><![CDATA[No.]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="434" y="122" width="142" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>

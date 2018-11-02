@@ -17,7 +17,8 @@
 	<queryString>
 		<![CDATA[SELECT A.cantidad, B.descripcion, A.precioUnitario, A.precioTotal
 FROM	umgAnalisis.DetalleFactura A
-	LEFT JOIN umgAnalisis.Producto B ON A.idProducto = B.idProducto]]>
+	LEFT JOIN umgAnalisis.Producto B ON A.idProducto = B.idProducto
+where numeroFactura = $P{pCond1}]]>
 	</queryString>
 	<field name="cantidad" class="java.lang.Integer"/>
 	<field name="descripcion" class="java.lang.String"/>
