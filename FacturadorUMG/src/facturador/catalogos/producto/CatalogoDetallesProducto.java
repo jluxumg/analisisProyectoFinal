@@ -11,10 +11,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.JOptionPane;
-import facturador.beans.Producto;
 
-public class ModificarProducto extends JDialog implements ActionListener {
+public class CatalogoDetallesProducto extends JDialog implements ActionListener {
 
     private final JPanel panelVentana;
     private final JLabel imagen;
@@ -30,19 +28,15 @@ public class ModificarProducto extends JDialog implements ActionListener {
     public JTextField txtCantidadTotal;
     public JTextField txtCantidadVendida;
 
-    private final JButton cmdGuardar;
-    private final JButton cmdCancelar;
+    private JButton cmdCancelar;
 
-    private int numeroElemento;
-    private Producto producto;
-    private int idProducto;
-
-    private static ModificarProducto instancia;
+    private static CatalogoDetallesProducto instancia;
 
     //Constructor
-    public ModificarProducto() {
+    public CatalogoDetallesProducto() {
         panelVentana = new JPanel();
         panelVentana.setLayout(null);
+
         imagen = new JLabel();
         imagen.setIcon(new ImageIcon(getClass().getResource("/Imagenes/prd-128.png")));
         imagen.setBounds(15, 10, 130, 130);
@@ -54,6 +48,7 @@ public class ModificarProducto extends JDialog implements ActionListener {
 
         txtNombre = new JTextField();
         txtNombre.setBounds(175, 35, 250, 20);
+        txtNombre.setEditable(false);
 
         lblDescripcion = new JLabel("Descripcion");
         lblDescripcion.setFont(new Font("Serif", Font.BOLD, 16));
@@ -62,6 +57,7 @@ public class ModificarProducto extends JDialog implements ActionListener {
 
         txtDescripcion = new JTextField();
         txtDescripcion.setBounds(175, 85, 250, 20);
+        txtDescripcion.setEditable(false);
 
         lblPrecio = new JLabel("Precio");
         lblPrecio.setFont(new Font("Serif", Font.BOLD, 16));
@@ -70,6 +66,7 @@ public class ModificarProducto extends JDialog implements ActionListener {
 
         txtPrecio = new JTextField();
         txtPrecio.setBounds(175, 140, 250, 20);
+        txtPrecio.setEditable(false);
 
         lblCantidadTotal = new JLabel("Cantidad Total");
         lblCantidadTotal.setFont(new Font("Serif", Font.BOLD, 16));
@@ -78,6 +75,7 @@ public class ModificarProducto extends JDialog implements ActionListener {
 
         txtCantidadTotal = new JTextField();
         txtCantidadTotal.setBounds(175, 195, 250, 20);
+        txtCantidadTotal.setEditable(false);
 
         lblCantidadVendida = new JLabel("Cantidad Vendida");
         lblCantidadVendida.setFont(new Font("Serif", Font.BOLD, 16));
@@ -86,13 +84,7 @@ public class ModificarProducto extends JDialog implements ActionListener {
 
         txtCantidadVendida = new JTextField();
         txtCantidadVendida.setBounds(175, 250, 250, 20);
-
-        cmdGuardar = new JButton("Guardar", new ImageIcon(getClass().getResource("/Imagenes/guardar.png")));
-        cmdGuardar.setVerticalTextPosition(SwingConstants.BOTTOM);
-        cmdGuardar.setHorizontalTextPosition(SwingConstants.CENTER);
-        cmdGuardar.setToolTipText("Guardar Producto");
-        cmdGuardar.setBounds(280, 315, 110, 60);
-        cmdGuardar.addActionListener(this);
+        txtCantidadVendida.setEditable(false);
 
         cmdCancelar = new JButton("Cancelar", new ImageIcon(getClass().getResource("/Imagenes/cancelar.png")));
         cmdCancelar.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -115,11 +107,10 @@ public class ModificarProducto extends JDialog implements ActionListener {
         panelVentana.add(txtCantidadTotal);
         panelVentana.add(txtCantidadVendida);
 
-        panelVentana.add(cmdGuardar);
         panelVentana.add(cmdCancelar);
 
         this.add(panelVentana);
-        this.setTitle("Editar Producto");
+        this.setTitle("Detalles De Producto");
         this.setModal(true);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setSize(600, 420);
@@ -127,16 +118,10 @@ public class ModificarProducto extends JDialog implements ActionListener {
 
         this.setResizable(false);
 
+        //panelVentana.setBackground(Color.lightGray);
     }
 
     public void actionPerformed(ActionEvent objeto) {
-        if (objeto.getSource() == cmdGuardar) {
-            getModificarProducto();
-            JOptionPane.showMessageDialog(null, "Ingresado Exitosamente");
-            CatalogoProducto.getInstancia().getModelo().modificarProducto(numeroElemento, producto);
-            instancia.dispose();
-
-        }
 
         if (objeto.getSource() == cmdCancelar) {
             instancia.dispose();
@@ -144,45 +129,19 @@ public class ModificarProducto extends JDialog implements ActionListener {
         }
     }
 
-    public static ModificarProducto getInstancia(Producto producto, int elemento) {
+    public static CatalogoDetallesProducto getInstancia() {
         if (instancia == null) {
-            instancia = new ModificarProducto();
+            instancia = new CatalogoDetallesProducto();
         }
-        instancia.setModificarProducto(producto, elemento);
         return instancia;
-    }
-
-    public void setModificarProducto(Producto p, int elemento) {
-        numeroElemento = elemento;
-        idProducto = p.getIdProducto();
-        txtNombre.setText(p.getNombre());
-        txtDescripcion.setText(p.getDescripcion());
-        txtPrecio.setText(p.getPrecio().toString());
-        txtCantidadTotal.setText(p.getCantidadTotal().toString());
-        txtCantidadVendida.setText(p.getCantidadVendida().toString());
-
-    }
-
-    public void getModificarProducto() {
-        producto = new Producto();
-        producto.setIdProducto(idProducto);
-        producto.setNombre(txtNombre.getText().trim());
-        producto.setDescripcion(txtDescripcion.getText().trim());
-        producto.setPrecio(Double.parseDouble(txtPrecio.getText().trim()));
-        producto.setCantidadTotal(Integer.parseInt(txtCantidadTotal.getText().trim()));
-        producto.setCantidadVendida(Integer.parseInt(txtCantidadVendida.getText().trim()));
-        producto.setCantidadDisponible(producto.getCantidadTotal() - producto.getCantidadVendida());
-
     }
 
     public void llenar() {
 
-        idProducto = Integer.parseInt(CatalogoProducto.getInstancia().tblProductos.getValueAt(CatalogoProducto.getInstancia().tblProductos.getSelectedRow(), 0).toString());
         txtNombre.setText(CatalogoProducto.getInstancia().tblProductos.getValueAt(CatalogoProducto.getInstancia().tblProductos.getSelectedRow(), 1).toString());
         txtPrecio.setText(CatalogoProducto.getInstancia().tblProductos.getValueAt(CatalogoProducto.getInstancia().tblProductos.getSelectedRow(), 2).toString());
         txtCantidadTotal.setText(CatalogoProducto.getInstancia().tblProductos.getValueAt(CatalogoProducto.getInstancia().tblProductos.getSelectedRow(), 3).toString());
         txtDescripcion.setText(CatalogoProducto.getInstancia().tblProductos.getValueAt(CatalogoProducto.getInstancia().tblProductos.getSelectedRow(), 5).toString());
         txtCantidadVendida.setText(CatalogoProducto.getInstancia().tblProductos.getValueAt(CatalogoProducto.getInstancia().tblProductos.getSelectedRow(), 6).toString());
-
     }
 }

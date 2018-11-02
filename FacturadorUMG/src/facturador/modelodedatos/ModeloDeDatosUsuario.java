@@ -11,7 +11,7 @@ public class ModeloDeDatosUsuario extends AbstractTableModel {
     private ArrayList<Usuario> listaDeUsuarios2;
 
     public String buscar;
-    private String[] encabezados = {"USUARIO", "NOMBRE", "APELLIDO", "ESTADO"};
+    private String[] encabezados = {"USUARIO", "NOMBRE", "APELLIDO", "ESTADO", "ROL", "PASSWORD"};
 
     public ModeloDeDatosUsuario() {
         listaDeUsuarios = ManejadorDeUsuarios.getInstancia().listar();
@@ -46,6 +46,12 @@ public class ModeloDeDatosUsuario extends AbstractTableModel {
                 break;
             case 3:
                 resultado = usuario.getEstado();
+                break;
+            case 4:
+                resultado = usuario.getRol();
+                break;
+            case 5:
+                resultado = usuario.getPassword();
                 break;
 
         }

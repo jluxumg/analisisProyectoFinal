@@ -1,7 +1,6 @@
-package facturador.catalogos.producto;
+package facturador.catalogos.usuarios;
 
-import facturador.catalogos.cliente.AgregarCliente;
-import facturador.catalogos.cliente.CatalogoDetallesCliente;
+import facturador.catalogos.cliente.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -15,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import facturador.modelodedatos.ModeloDeDatosProducto;
+import facturador.modelodedatos.ModeloDeDatosUsuario;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
@@ -26,10 +25,10 @@ import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-public class CatalogoProductos extends JInternalFrame implements ActionListener, KeyListener {
+public class CatalogoUsuarios extends JInternalFrame implements ActionListener, KeyListener {
 
     //Cracion de objetos
-    private static CatalogoProductos instancia;
+    private static CatalogoUsuarios instancia;
     private JPanel panelBotones;
     private JPanel panelVentana;
     private JButton cmdNuevo;
@@ -37,9 +36,9 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
     private JButton cmdModificar;
     private JButton cmdDetalles;
 
-    public JTable tblProductos;
-    private JScrollPane scrollTablaProductos;
-    private ModeloDeDatosProducto modeloDeDatos;
+    public JTable tblUsuarios;
+    private JScrollPane scrollTablaUsuarios;
+    private ModeloDeDatosUsuario modeloDeDatos;
     private JLabel espacio;
     private JTextField buscar;
     private TableRowSorter<TableModel> modeloOrdenado;
@@ -47,8 +46,8 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
     private JLabel imagenBuscar;
     //Creacion del constructor
 
-    public CatalogoProductos() {
-        modeloDeDatos = new ModeloDeDatosProducto();
+    public CatalogoUsuarios() {
+        modeloDeDatos = new ModeloDeDatosUsuario();
         modeloOrdenado = new TableRowSorter<TableModel>(modeloDeDatos);
         modeloDeDatos.buscar = "";
         panelBotones = new JPanel();
@@ -57,35 +56,35 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
         cmdNuevo.setVerticalTextPosition(SwingConstants.BOTTOM);
         cmdNuevo.setHorizontalTextPosition(SwingConstants.CENTER);
         cmdNuevo.setMaximumSize(new Dimension(100, 55));
-        cmdNuevo.setToolTipText("Agregar Cliente");
+        cmdNuevo.setToolTipText("Agregar Usuario");
         cmdNuevo.addActionListener(this);
         //Boton Eliminar
         cmdEliminar = new JButton("Eliminar", new ImageIcon(getClass().getResource("/Imagenes/eliminar.png")));
         cmdEliminar.setVerticalTextPosition(SwingConstants.BOTTOM);
         cmdEliminar.setHorizontalTextPosition(SwingConstants.CENTER);
         cmdEliminar.setMaximumSize(new Dimension(100, 55));
-        cmdEliminar.setToolTipText("Eliminar Cliente");
+        cmdEliminar.setToolTipText("Eliminar Usuario");
         cmdEliminar.addActionListener(this);
         //Boton Modificar
         cmdModificar = new JButton("Modificar", new ImageIcon(getClass().getResource("/Imagenes/editar.png")));
         cmdModificar.setVerticalTextPosition(SwingConstants.BOTTOM);
         cmdModificar.setHorizontalTextPosition(SwingConstants.CENTER);
         cmdModificar.setMaximumSize(new Dimension(100, 55));
-        cmdModificar.setToolTipText("Modificar Cliente");
+        cmdModificar.setToolTipText("Modificar Usuario");
         cmdModificar.addActionListener(this);
 
         cmdDetalles = new JButton("Ver Detalles", new ImageIcon(getClass().getResource("/Imagenes/verCliente.png")));
         cmdDetalles.setVerticalTextPosition(SwingConstants.BOTTOM);
         cmdDetalles.setHorizontalTextPosition(SwingConstants.CENTER);
         cmdDetalles.setMaximumSize(new Dimension(100, 55));
-        cmdDetalles.setToolTipText("Ver Cliente");
+        cmdDetalles.setToolTipText("Ver Usuario");
         cmdDetalles.addActionListener(this);
 
         buscar = new JTextField(125);
         buscar.setBounds(50, 35, 125, 20);
         buscar.addKeyListener(this);
 
-        lblBuscar = new JLabel("Buscar Nombre De Producto");
+        lblBuscar = new JLabel("Buscar Nombre De Usuario");
         lblBuscar.setBounds(50, 5, 200, 20);
         lblBuscar.setFont(new Font("Serif", Font.BOLD, 14));
         lblBuscar.setForeground(Color.darkGray);
@@ -107,7 +106,7 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
 
         //Parametros de configuracion de JTable
         //Parametros de vista de la ventana Usuario
-        this.setTitle("Listado de Productos");
+        this.setTitle("Listado de Usuarios");
         this.setFrameIcon(new ImageIcon(getClass().getResource("/Imagenes/iconoClientes.png")));
         this.setSize(800, 300);
         this.setLocation(100, 100);
@@ -130,37 +129,37 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
 
     public void actionPerformed(ActionEvent objeto) {
         if (objeto.getSource() == cmdNuevo) {
-            AgregarProducto ap = AgregarProducto.getInstancia();
-            ap.setVisible(true);
+            AgregarCliente agregarCliente = AgregarCliente.getInstancia();
+            agregarCliente.setVisible(true);
 
         }
         if (objeto.getSource() == cmdEliminar) {
-//            if (tblProductos.getSelectedRow() == -1) {
-//                JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Cliente en la Tabla");
-//            } else {
-//                int respuesta = JOptionPane.showConfirmDialog(null, "Realmente desea eliminar el Cliente!", "Eliminar Cliente", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-//                if (respuesta == 0) {
-//                    modeloDeDatos.eliminarProducto(tblProductos.getSelectedRow());
-//                }
-//            }
+            if (tblUsuarios.getSelectedRow() == -1) {
+                JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Usuario en la Tabla");
+            } else {
+                int respuesta = JOptionPane.showConfirmDialog(null, "Realmente desea eliminar el Usuario!", "Eliminar Usuario", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (respuesta == 0) {
+                    modeloDeDatos.eliminarUsuario(tblUsuarios.getSelectedRow());
+                }
+            }
         }
         if (objeto.getSource() == cmdModificar) {
-            if (tblProductos.getSelectedRow() == -1) {
-                JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Producto en la Tabla");
+            if (tblUsuarios.getSelectedRow() == -1) {
+                JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Usuario en la Tabla");
             } else {
-                ModificarProducto mp = ModificarProducto.getInstancia(modeloDeDatos.obtenerListaProductos().get(tblProductos.getSelectedRow()), tblProductos.getSelectedRow());
-                mp.setVisible(true);
+//                ModificarCliente modificarCliente = ModificarCliente.getInstancia(modeloDeDatos.obtenerListaUsuarios().get(tblUsuarios.getSelectedRow()), tblUsuarios.getSelectedRow());
+//                modificarCliente.setVisible(true);
             }
 
         }
 
         if (objeto.getSource() == cmdDetalles) {
-            if (tblProductos.getSelectedRow() == -1) {
+            if (tblUsuarios.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Cliente Para Ver los Detalles");
             } else {
-                CatalogoDetallesCliente.getInstancia().llenar();
-                CatalogoDetallesCliente catalogoDetallesCliente = CatalogoDetallesCliente.getInstancia();
-                catalogoDetallesCliente.setVisible(true);
+//                CatalogoDetallesCliente.getInstancia().llenar();
+//                CatalogoDetallesCliente catalogoDetallesCliente = CatalogoDetallesCliente.getInstancia();
+//                catalogoDetallesCliente.setVisible(true);
 
             }
 
@@ -180,36 +179,36 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
 
     //Creacion del Scroll Pane
     public JScrollPane getJScrollPane() {
-        if (scrollTablaProductos == null) {
-            scrollTablaProductos = new JScrollPane();
-            scrollTablaProductos.setBounds(new Rectangle(20, 27, 746, 150));
-            scrollTablaProductos.setViewportView(getTablaClientes());
+        if (scrollTablaUsuarios == null) {
+            scrollTablaUsuarios = new JScrollPane();
+            scrollTablaUsuarios.setBounds(new Rectangle(20, 27, 746, 150));
+            scrollTablaUsuarios.setViewportView(getTablaClientes());
         }
-        return scrollTablaProductos;
+        return scrollTablaUsuarios;
     }
     //Metodo para crear JTable e inicializar el modelo de datos
 
     public JTable getTablaClientes() {
-        if (tblProductos == null) {
-            tblProductos = new JTable();
-            tblProductos.setModel(modeloDeDatos);
+        if (tblUsuarios == null) {
+            tblUsuarios = new JTable();
+            tblUsuarios.setModel(modeloDeDatos);
         }
-        return tblProductos;
+        return tblUsuarios;
     }
 
-    public static CatalogoProductos getInstancia() {
+    public static CatalogoUsuarios getInstancia() {
         if (instancia == null) {
-            instancia = new CatalogoProductos();
+            instancia = new CatalogoUsuarios();
         }
         return instancia;
     }
 
-    public ModeloDeDatosProducto getModelo() {
+    public ModeloDeDatosUsuario getModelo() {
         return modeloDeDatos;
     }
 
     public void actualizarModelo() {
-        modeloDeDatos = new ModeloDeDatosProducto();
+        modeloDeDatos = new ModeloDeDatosUsuario();
     }
 
     public void keyTyped(KeyEvent e) {
@@ -224,6 +223,6 @@ public class CatalogoProductos extends JInternalFrame implements ActionListener,
 
     public void keyReleased(KeyEvent e) {
         modeloOrdenado.setRowFilter(RowFilter.regexFilter(buscar.getText(), 1));
-        tblProductos.setRowSorter(modeloOrdenado);
+        tblUsuarios.setRowSorter(modeloOrdenado);
     }
 }

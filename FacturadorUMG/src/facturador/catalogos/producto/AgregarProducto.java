@@ -152,7 +152,7 @@ public class AgregarProducto extends JDialog implements ActionListener {
                 prd.setCantidadVendida(Integer.parseInt(txtCantidadVendida.getText().trim()));
                 prd.setCantidadDisponible(prd.getCantidadTotal() - prd.getCantidadVendida());
 
-                CatalogoProductos.getInstancia().getModelo().agregarProducto(prd);
+                CatalogoProducto.getInstancia().getModelo().agregarProducto(prd);
 
                 instancia.dispose();
                 txtNombre.setText("");
