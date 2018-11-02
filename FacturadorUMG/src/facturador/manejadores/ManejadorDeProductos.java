@@ -50,7 +50,7 @@ public class ManejadorDeProductos {
         ResultSet resultado = null;
         try {
             //JOptionPane.showMessageDialog(null, VentanaLogin.getInstancia().vendedor);
-            resultado = Conexion.getInstancia().hacerConsulta("select idProducto,nombre,descripcion,precio,cantidadTotal,cantidadVendida,cantidadDisponible from Producto where UPPER(nombre) like'%" + buscar.toUpperCase() + "%'");
+            resultado = Conexion.getInstancia().hacerConsulta("select idProducto,nombre,descripcion,precio,cantidadTotal,cantidadVendida,cantidadDisponible from Producto where UPPER(nombre) like'%" + (buscar == null ? "" : buscar.toUpperCase()) + "%'");
             while (resultado.next()) {
                 listaDeProductos.add(new Producto(resultado.getInt("idProducto"), resultado.getString("nombre"), resultado.getString("descripcion"), resultado.getDouble("precio"), resultado.getInt("cantidadTotal"), resultado.getInt("cantidadVendida"), resultado.getInt("cantidadDisponible")));
             }
@@ -61,7 +61,7 @@ public class ManejadorDeProductos {
 
     public void agregar(Producto producto) {
         try {
-            
+
             ResultSet resultado = null;
             int codigo = 1;
             try {
@@ -74,7 +74,7 @@ public class ManejadorDeProductos {
             } catch (SQLException e) {
             }
             psAgregar.setInt(1, codigo);
-            
+
             psAgregar.setString(2, producto.getNombre());
             psAgregar.setString(3, producto.getDescripcion());
             psAgregar.setDouble(4, producto.getPrecio());
