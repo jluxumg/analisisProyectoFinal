@@ -218,19 +218,23 @@ public class MenuPrincipal implements ActionListener {
         cerrarSesion.setVisible(true);
         iniciarSesion.setVisible(false);
         salir.setVisible(false);
-        Mproductos.setVisible(true);
-        Mclientes.setVisible(true);
-        Musuarios.setVisible(true);
-        Mfacturar.setVisible(true);
 
     }
 
     public void superUsuario() {
         salir.setVisible(false);
+        Mproductos.setVisible(true);
+        Mclientes.setVisible(true);
+        Musuarios.setVisible(true);
+        Mfacturar.setVisible(true);
     }
 
     public void usuarioNormal() {
         salir.setVisible(false);
+        Mproductos.setVisible(false);
+        Mclientes.setVisible(true);
+        Musuarios.setVisible(false);
+        Mfacturar.setVisible(true);
 
     }
 

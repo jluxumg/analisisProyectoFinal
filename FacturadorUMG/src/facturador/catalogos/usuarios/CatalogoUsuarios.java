@@ -102,7 +102,6 @@ public class CatalogoUsuarios extends JInternalFrame implements ActionListener, 
         panelBotones.add(cmdNuevo);
         panelBotones.add(cmdModificar);
         panelBotones.add(cmdEliminar);
-        panelBotones.add(cmdDetalles);
 
         //Parametros de configuracion de JTable
         //Parametros de vista de la ventana Usuario
@@ -129,9 +128,8 @@ public class CatalogoUsuarios extends JInternalFrame implements ActionListener, 
 
     public void actionPerformed(ActionEvent objeto) {
         if (objeto.getSource() == cmdNuevo) {
-            AgregarCliente agregarCliente = AgregarCliente.getInstancia();
-            agregarCliente.setVisible(true);
-
+            AgregarUsuario au = AgregarUsuario.getInstancia();
+            au.setVisible(true);
         }
         if (objeto.getSource() == cmdEliminar) {
             if (tblUsuarios.getSelectedRow() == -1) {
@@ -147,15 +145,16 @@ public class CatalogoUsuarios extends JInternalFrame implements ActionListener, 
             if (tblUsuarios.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Usuario en la Tabla");
             } else {
-//                ModificarCliente modificarCliente = ModificarCliente.getInstancia(modeloDeDatos.obtenerListaUsuarios().get(tblUsuarios.getSelectedRow()), tblUsuarios.getSelectedRow());
-//                modificarCliente.setVisible(true);
+                ModificarUsuario mu = ModificarUsuario.getInstancia(modeloDeDatos.obtenerListaUsuarios().get(tblUsuarios.getSelectedRow()), tblUsuarios.getSelectedRow());
+                mu.setVisible(true);
+
             }
 
         }
 
         if (objeto.getSource() == cmdDetalles) {
             if (tblUsuarios.getSelectedRow() == -1) {
-                JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Cliente Para Ver los Detalles");
+                JOptionPane.showMessageDialog(null, "Debe Seleccionar Un Usuario Para Ver los Detalles");
             } else {
 //                CatalogoDetallesCliente.getInstancia().llenar();
 //                CatalogoDetallesCliente catalogoDetallesCliente = CatalogoDetallesCliente.getInstancia();

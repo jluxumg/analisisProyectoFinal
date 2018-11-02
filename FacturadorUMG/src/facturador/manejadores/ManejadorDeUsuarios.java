@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import facturador.db.Conexion;
 import facturador.beans.Usuario;
+import facturador.sistema.MD5;
+import java.security.MessageDigest;
 
 public class ManejadorDeUsuarios {
 
@@ -17,7 +19,7 @@ public class ManejadorDeUsuarios {
 
     public ManejadorDeUsuarios() {
         try {
-            psAgregar = Conexion.getInstancia().getConnection().prepareStatement("insert into Usuario(usuario,nombre,apellido,password,estado,rol)values(?,?,?,?,?,?)");
+            psAgregar = Conexion.getInstancia().getConnection().prepareStatement("insert into Usuario(usuario,nombre,apellido,password,estado,rol)values(?,?,?,MD5(?),?,?)");
             psModificar = Conexion.getInstancia().getConnection().prepareStatement("update Usuario set nombre=?,apellido=?,password=?,estado=?,rol=? where usuario=?");
             psEliminar = Conexion.getInstancia().getConnection().prepareStatement("delete from Usuario where usuario=?");
         } catch (SQLException e) {
@@ -36,11 +38,12 @@ public class ManejadorDeUsuarios {
         ResultSet resultado = null;
         try {
             //JOptionPane.showMessageDialog(null, VentanaLogin.getInstancia().vendedor);
-            resultado = Conexion.getInstancia().hacerConsulta("select usuario,nombre,apellido,password,estado,rol from Usuario ");
+            resultado = Conexion.getInstancia().hacerConsulta("select usuario,nombre,apellido,MD5(password) password,estado,rol from Usuario ");
             while (resultado.next()) {
                 listaDeUsuario.add(new Usuario(resultado.getString("usuario"), resultado.getString("nombre"), resultado.getString("apellido"), resultado.getString("password"), resultado.getString("estado"), resultado.getString("rol")));
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return listaDeUsuario;
     }
@@ -50,11 +53,12 @@ public class ManejadorDeUsuarios {
         ResultSet resultado = null;
         try {
             //JOptionPane.showMessageDialog(null, VentanaLogin.getInstancia().vendedor);
-            resultado = Conexion.getInstancia().hacerConsulta("select usuario,nombre,apellido,password,estado,rol from Usuario where nombre like'%" + buscar + "%'");
+            resultado = Conexion.getInstancia().hacerConsulta("select usuario,nombre,apellido,MD5(password) password,estado,rol from Usuario where nombre like'%" + buscar + "%'");
             while (resultado.next()) {
                 listaDeUsuario.add(new Usuario(resultado.getString("usuario"), resultado.getString("nombre"), resultado.getString("apellido"), resultado.getString("password"), resultado.getString("estado"), resultado.getString("rol")));
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return listaDeUsuario;
     }
@@ -64,7 +68,7 @@ public class ManejadorDeUsuarios {
             psAgregar.setString(1, usuario.getUsuario());
             psAgregar.setString(2, usuario.getNombre());
             psAgregar.setString(3, usuario.getApellido());
-            psAgregar.setString(4, "MD5(" + usuario.getPassword() + ")");
+            psAgregar.setString(4, usuario.getPassword());
             psAgregar.setString(5, usuario.getEstado());
             psAgregar.setString(6, usuario.getRol());
             psAgregar.execute();
@@ -85,9 +89,11 @@ public class ManejadorDeUsuarios {
     public void modificar(Usuario usuario) {
         try {
 
+            String hash = MD5.getHash(usuario.getPassword().trim());
+            System.out.println("Hash>>>" + hash);
             psModificar.setString(1, usuario.getNombre());
             psModificar.setString(2, usuario.getApellido());
-            psModificar.setString(3, "MD5(" + usuario.getPassword() + ")");
+            psModificar.setString(3, hash);
             psModificar.setString(4, usuario.getEstado());
             psModificar.setString(5, usuario.getRol());
             psModificar.setString(6, usuario.getUsuario());
