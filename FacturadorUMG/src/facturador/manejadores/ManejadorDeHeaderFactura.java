@@ -141,9 +141,8 @@ public class ManejadorDeHeaderFactura {
             psAgregar.setString(3, encabezadoFactura.getUsuario().getUsuario());
             psAgregar.setString(4, encabezadoFactura.getDireccionFactura());
             psAgregar.setString(5, encabezadoFactura.getEstado());
-            psAgregar.setString(6, encabezadoFactura.getEstado() == "FAC" ? String.valueOf(correlativoFactura() + 1000) : " ");
+            psAgregar.setString(6, encabezadoFactura.getEstado().trim() == "FAC" ? String.valueOf(correlativoFiscal(correlativoFac)) : " ");
             psAgregar.setDouble(7, encabezadoFactura.getTotalFactura());
-            //psAgregar.setDate(8, (Date) encabezadoFactura.getFecha());
             psAgregar.execute();
         } catch (SQLException e) {
             e.printStackTrace();
