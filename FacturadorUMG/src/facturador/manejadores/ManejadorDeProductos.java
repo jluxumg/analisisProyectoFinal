@@ -58,6 +58,20 @@ public class ManejadorDeProductos {
         }
         return listaDeProductos;
     }
+    
+     public Producto obtenerProducto(int producto) {
+        Producto prod = new Producto();
+        ResultSet resultado = null;
+        try {
+            //JOptionPane.showMessageDialog(null, VentanaLogin.getInstancia().vendedor);
+            resultado = Conexion.getInstancia().hacerConsulta("select idProducto,nombre,descripcion,precio,cantidadTotal,cantidadVendida,cantidadDisponible from Producto where idProducto ="+producto+"");
+            while (resultado.next()) {
+                prod = new Producto(resultado.getInt("idProducto"), resultado.getString("nombre"), resultado.getString("descripcion"), resultado.getDouble("precio"), resultado.getInt("cantidadTotal"), resultado.getInt("cantidadVendida"), resultado.getInt("cantidadDisponible"));
+            }
+        } catch (SQLException e) {
+        }
+        return prod;
+    }
 
     public void agregar(Producto producto) {
         try {

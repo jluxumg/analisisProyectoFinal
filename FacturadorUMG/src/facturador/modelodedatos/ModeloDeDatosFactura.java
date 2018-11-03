@@ -1,5 +1,6 @@
 package facturador.modelodedatos;
 
+import facturador.beans.DetalleFactura;
 import facturador.beans.EncabezadoFactura;
 import facturador.manejadores.ManejadorDeClientes;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class ModeloDeDatosFactura extends AbstractTableModel {
     
     public void anularFactura(int fila, EncabezadoFactura factura) {
         ManejadorDeHeaderFactura.getInstancia().anular(factura);
-        listaDeFacturas.set(fila, factura);
+        listaDeFacturas = ManejadorDeHeaderFactura.getInstancia().listar();
         fireTableDataChanged();
     }
     
@@ -82,4 +83,18 @@ public class ModeloDeDatosFactura extends AbstractTableModel {
     public void actualizar() {
         listaDeFacturas = ManejadorDeHeaderFactura.getInstancia().listar();
     }
+    
+    public void agregarDetalle(ArrayList<DetalleFactura> lista) {
+        int correlativo = 0;
+        EncabezadoFactura factura = new EncabezadoFactura();
+        factura.setIdFactura(ManejadorDeHeaderFactura.getInstancia().correlativoFac);
+        for(DetalleFactura detalle: lista){
+           correlativo++;
+           detalle.setFactura(factura);
+           detalle.setCorrelativo(correlativo);
+           ManejadorDeHeaderFactura.getInstancia().agregar(detalle); 
+        }
+    }
+    
+    
 }

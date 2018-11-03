@@ -2,6 +2,7 @@ package facturador.catalogos.factura;
 
 import com.toedter.calendar.JDateChooser;
 import facturador.beans.Clientes;
+import facturador.beans.DetalleFactura;
 import facturador.beans.EncabezadoFactura;
 import facturador.beans.Usuario;
 import facturador.modelodedatos.ModeloDeDatosCliente;
@@ -21,12 +22,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import facturador.manejadores.ManejadorDeClientes;
+import facturador.modelodedatos.ModeloDeDatosDetalleFacturaTabla;
 import facturador.ventanas.VentanaLogin;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.ArrayList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class Facturador extends JDialog implements ActionListener {
 
@@ -58,10 +64,19 @@ public class Facturador extends JDialog implements ActionListener {
     private JButton btnEliminar;
 
     private static Facturador instancia;
+    private ArrayList<DetalleFactura> listDetalle;
+    ModeloDeDatosDetalleFacturaTabla modeloDetalle;
+    private TableRowSorter<TableModel> modeloOrdenado;
+    
+    public JTable tblDetalle;
+    private JScrollPane scrollTabla;
 
     //Constructor
     public Facturador() {
+        listDetalle = new ArrayList<DetalleFactura>();
         modeloDeDatos = new ModeloDeDatosCliente();
+        
+        modeloDetalle = new ModeloDeDatosDetalleFacturaTabla();
         panelVentana = new JPanel();
         panelVentana.setLayout(null);
 
@@ -148,20 +163,7 @@ public class Facturador extends JDialog implements ActionListener {
         cmdCancelar.setToolTipText("Cancelar");
         cmdCancelar.setBounds(135, 560, 110, 60);
         cmdCancelar.addActionListener(this);
-        //Array de ‘String’ con los titulos de las columnas 
-        String[] columnNames = {"Correlativo", "Producto", "Cantidad", "Precio Unitario", "Precio Total"};
-
-        DefaultTableModel modeloDetalle = new DefaultTableModel(columnNames, 0);
-
-        //modeloDetalle.set
-        //Creacion de la tabla 
-        final JTable table = new JTable(modeloDetalle);
-        table.setPreferredScrollableViewportSize(new Dimension(500, 80));
-
-        //Creamos un scrollpanel y se lo agregamos a la tabla 
-        JScrollPane scrollpane = new JScrollPane(table);
-        scrollpane.setBounds(15, 245, 960, 300);
-
+        
         panelVentana.add(imagen);
 
         panelVentana.add(lblCliente);
@@ -174,10 +176,9 @@ public class Facturador extends JDialog implements ActionListener {
         panelVentana.add(txtFecha);
         panelVentana.add(btnAgregar);
         panelVentana.add(btnEliminar);
-        panelVentana.add(btnModificar);
         panelVentana.add(cmdGuardar);
         panelVentana.add(cmdCancelar);
-        panelVentana.add(scrollpane, BorderLayout.CENTER);
+        panelVentana.add(getJScrollPane(), BorderLayout.CENTER);
 
         this.add(panelVentana);
         this.setTitle("Nueva Factura");
@@ -198,7 +199,8 @@ public class Facturador extends JDialog implements ActionListener {
                     || cmbCliente.getSelectedItem().toString().length() == 0
                     || cmbCliente.getSelectedItem().toString().equalsIgnoreCase("Seleccione un cliente")
                     || cmbEstado.getSelectedItem().toString().length() == 0
-                    || txtFecha.getDate() == null) {
+                    || txtFecha.getDate() == null
+                    || Facturador.getInstancia().modeloDetalle.getListaDetalle().size() <= 0) {
                 JOptionPane.showMessageDialog(null, "Hay Datos En Blanco, por favor revisar", "ADVERTENCIA", 1);
             } else {
                 prueba = 1;
@@ -211,26 +213,26 @@ public class Facturador extends JDialog implements ActionListener {
 
                 JOptionPane.showMessageDialog(null, "Ingresado Exitosamente");
                 EncabezadoFactura ef = new EncabezadoFactura();
+                Double totalFactura = new Double("0");
+                for(DetalleFactura detalle : Facturador.getInstancia().modeloDetalle.getListaDetalle()){
+                    totalFactura += detalle.getPrecioTotal();
+                }
                 ef.setIdFactura(0);
                 ef.setCliente(cliente);
                 ef.setDireccionFactura(txtDireccion.getText().trim());
                 ef.setDocumentoFiscal(" ");
                 ef.setEstado(cmbEstado.getSelectedItem().toString().substring(0, cmbEstado.getSelectedItem().toString().indexOf("-")));
-                Usuario usuario = new Usuario();
-                usuario.setUsuario("jlux");
                 System.out.println("Usuario " + VentanaLogin.getInstancia().userSession.getUsuario());
                 ef.setUsuario(VentanaLogin.getInstancia().userSession);
-                Double total = new Double(0);
-
-                ef.setTotalFactura(total);
-
+                ef.setTotalFactura(totalFactura);
                 CatalogoFacturas.getInstancia().getModelo().agregarFactura(ef);
-
+                CatalogoFacturas.getInstancia().getModelo().agregarDetalle(Facturador.getInstancia().modeloDetalle.getListaDetalle());
                 instancia.dispose();
                 instancia.dispose();
                 txtDireccion.setText("");
                 cmbEstado.setSelectedItem(null);
                 cmbCliente.setSelectedItem(null);
+                Facturador.getInstancia().modeloDetalle.setListaDetalle(null);
             }
         }
 
@@ -246,7 +248,16 @@ public class Facturador extends JDialog implements ActionListener {
             AgregarDetalle agregarDetalle = AgregarDetalle.getInstancia();
             agregarDetalle.setVisible(true);
         }
+        if (objeto.getSource() == btnEliminar) {
+            if (tblDetalle.getSelectedRow() == -1) {
+                JOptionPane.showMessageDialog(null, "Debe Seleccionar una registro de la tabla");
+            } else {
+                Facturador.getInstancia().modeloDetalle.eliminarProducto(tblDetalle.getSelectedRow());
+            }
+        }
     }
+    
+    
 
     public static Facturador getInstancia() {
         if (instancia == null) {
@@ -254,6 +265,38 @@ public class Facturador extends JDialog implements ActionListener {
         }
         return instancia;
     }
+    
+    public void agregarLista(DetalleFactura detalle){
+        listDetalle.add(detalle);
+    }
 
+    public ArrayList<DetalleFactura> getListDetalle() {
+        
+        
+        return listDetalle;
+    }
+
+    public void setListDetalle(ArrayList<DetalleFactura> listDetalle) {
+        this.listDetalle = listDetalle;
+    }
+    
+    //Creacion del Scroll Pane
+    public JScrollPane getJScrollPane() {
+        if (scrollTabla == null) {
+            scrollTabla = new JScrollPane();
+            scrollTabla.setBounds(new Rectangle(15, 245, 960, 300));
+            scrollTabla.setViewportView(getTablaClientes());
+        }
+        return scrollTabla;
+    }
+    //Metodo para crear JTable e inicializar el modelo de datos
+
+    public JTable getTablaClientes() {
+        if (tblDetalle == null) {
+            tblDetalle = new JTable();
+            tblDetalle.setModel(modeloDetalle);
+        }
+        return tblDetalle;
+    }
 
 }

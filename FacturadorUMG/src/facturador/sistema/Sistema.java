@@ -1,4 +1,5 @@
 package facturador.sistema;
+import facturador.catalogos.factura.AgregarDetalle;
 import facturador.ventanas.VentanaPrincipal;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -19,6 +20,7 @@ public class Sistema {
         }catch(Exception e){
         }
         VentanaPrincipal ventanaPrincipal = VentanaPrincipal.getInstancia();
+        //ventanaPrincipal.setVisible(true);
     }
 
 }

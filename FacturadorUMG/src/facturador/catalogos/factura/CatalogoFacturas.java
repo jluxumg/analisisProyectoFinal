@@ -110,7 +110,6 @@ public class CatalogoFacturas extends JInternalFrame implements ActionListener, 
         //Agregar Botones al panel
         panelBotones.add(espacio);
         panelBotones.add(cmdNuevo);
-        panelBotones.add(cmdModificar);
         panelBotones.add(cmbAnular);
         panelBotones.add(cmbEmitir);
 
@@ -138,7 +137,8 @@ public class CatalogoFacturas extends JInternalFrame implements ActionListener, 
                     System.out.println("Se ha hecho un click");
                 }
                 if (e.getClickCount() == 2) {
-                    reporte();
+                    EncabezadoFactura factu = ManejadorDeHeaderFactura.getInstancia().buscar(modeloDeDatos.obtenerListaFactura().get(tblFacturas.getSelectedRow()).getIdFactura());
+                    reporte(factu.getIdFactura());
                 }
             }
         });
@@ -184,44 +184,6 @@ public class CatalogoFacturas extends JInternalFrame implements ActionListener, 
             }
 
         }
-    }
-
-    public void tableMenu(final JTable table) {
-        table.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                int r = table.rowAtPoint(e.getPoint());
-                if (r >= 0 && r < table.getRowCount()) {
-                    table.setRowSelectionInterval(r, r);
-                } else {
-                    table.clearSelection();
-                }
-
-                int rowindex = table.getSelectedRow();
-                if (rowindex < 0) {
-                    return;
-                }
-                if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
-                    JPopupMenu popup = tablePopup(table, rowindex);
-                    popup.show(e.getComponent(), e.getX(), e.getY());
-                }
-            }
-        });
-    }
-
-    public JPopupMenu tablePopup(final JTable table, final int row) {
-        JPopupMenu popup = new JPopupMenu("Popup");
-
-        JMenuItem refreshItem = new JMenuItem("Select");
-        refreshItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Nombre: " + table.getValueAt(row, 0));
-            }
-        });
-        popup.add(refreshItem);
-
-        return popup;
     }
 
     //Agregar el ScroollPane al panel de ventana
@@ -280,14 +242,14 @@ public class CatalogoFacturas extends JInternalFrame implements ActionListener, 
         tblFacturas.setRowSorter(modeloOrdenado);
     }
 
-    public void reporte() {
+    public void reporte(int idFactura) {
         Map<String, String> parm = new HashMap<String, String>();
         File imagen = new File("src/reporte/jasperImages/");
         File rutaSubReporte = new File("src/reporte/subreportnormal/");
         parm.put("p_rutaimg", imagen.getAbsolutePath());
         parm.put("SUBREPORT_DIR", rutaSubReporte.getAbsolutePath() + "/");
         parm.put("pSchemaDB", "umgAnalisis");
-        parm.put("pCond1", "1");
+        parm.put("pCond1", String.valueOf(idFactura));
         ReporteNuevo reporte = new ReporteNuevo();
         File file = new File("src/reporte/subreportnormal/Factura.jasper");
         reporte.JReportViewParametros(file.getAbsolutePath(), parm);

@@ -1,6 +1,7 @@
 package facturador.manejadores;
 
 import facturador.beans.Clientes;
+import facturador.beans.DetalleFactura;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,11 +15,14 @@ public class ManejadorDeHeaderFactura {
 
     private ArrayList<EncabezadoFactura> listaDeHeader;
     private PreparedStatement psAgregar;
+    private PreparedStatement psAgregarDetalle;
     private PreparedStatement psModificar;
     private PreparedStatement psEliminar;
     private PreparedStatement psAnular;
     private PreparedStatement psEmitirFactura;
+    private PreparedStatement psActualizaInventario;
     private static ManejadorDeHeaderFactura instancia;
+    public Integer correlativoFac = 0;
 
     public ManejadorDeHeaderFactura() {
         try {
@@ -27,6 +31,8 @@ public class ManejadorDeHeaderFactura {
             psEliminar = Conexion.getInstancia().getConnection().prepareStatement("delete from EncabezadoFactura where idFactura=?");
             psAnular = Conexion.getInstancia().getConnection().prepareStatement("update EncabezadoFactura set estado = 'ANU' where idFactura=?");
             psEmitirFactura = Conexion.getInstancia().getConnection().prepareStatement("update EncabezadoFactura set estado = 'FAC',documentoFiscal=? where idFactura=?");
+            psAgregarDetalle = Conexion.getInstancia().getConnection().prepareStatement("insert into DetalleFactura(numeroFactura,correlativo,idProducto,cantidad,precioUnitario,precioTotal)values(?,?,?,?,?,?)");
+            psActualizaInventario = Conexion.getInstancia().getConnection().prepareStatement("update Producto set cantidadVendida=cantidadVendida+?,cantidadDisponible=cantidadDisponible-? where idProducto=?");
         } catch (SQLException e) {
         }
     }
@@ -129,6 +135,7 @@ public class ManejadorDeHeaderFactura {
 
     public void agregar(EncabezadoFactura encabezadoFactura) {
         try {
+            correlativoFac = correlativoFactura();
             psAgregar.setInt(1, correlativoFactura());
             psAgregar.setInt(2, encabezadoFactura.getCliente().getIdCliente());
             psAgregar.setString(3, encabezadoFactura.getUsuario().getUsuario());
@@ -138,6 +145,21 @@ public class ManejadorDeHeaderFactura {
             psAgregar.setDouble(7, encabezadoFactura.getTotalFactura());
             //psAgregar.setDate(8, (Date) encabezadoFactura.getFecha());
             psAgregar.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void agregar(DetalleFactura detalleFactura) {
+        try {
+            psAgregarDetalle.setInt(1, detalleFactura.getFactura().getIdFactura());
+            psAgregarDetalle.setInt(2, detalleFactura.getCorrelativo());
+            psAgregarDetalle.setInt(3, detalleFactura.getProducto().getIdProducto());
+            psAgregarDetalle.setInt(4, detalleFactura.getCantidad());
+            psAgregarDetalle.setDouble(5, detalleFactura.getPrecioUnitario());
+            psAgregarDetalle.setDouble(6, detalleFactura.getPrecioTotal());
+            psAgregarDetalle.execute();
+            actualizaInventario(detalleFactura);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -182,6 +204,17 @@ public class ManejadorDeHeaderFactura {
             psEmitirFactura.setInt(1, correlativoFiscal(encabezadoFactura.getIdFactura()));
             psEmitirFactura.setInt(2, encabezadoFactura.getIdFactura());
             psEmitirFactura.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void actualizaInventario(DetalleFactura detalle) {
+        try {
+            psActualizaInventario.setInt(1, detalle.getCantidad());
+            psActualizaInventario.setInt(2, detalle.getCantidad());
+            psActualizaInventario.setInt(3, detalle.getProducto().getIdProducto());
+            psActualizaInventario.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
